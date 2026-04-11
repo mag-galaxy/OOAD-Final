@@ -65,7 +65,7 @@ public abstract class BasicAbstract extends ShapeAbstract{
     protected void drawLabel(Graphics g) {
         g.setColor(Color.BLACK);
         FontMetrics fm = g.getFontMetrics();
-        // 計算文字置中的座標 [cite: 132]
+        // 計算文字置中的座標
         int textX = getX() + (getWidth() - fm.stringWidth(getName())) / 2;
         int textY = getY() + (getHeight() + fm.getAscent()) / 2 - 2; 
         g.drawString(getName(), textX, textY);
