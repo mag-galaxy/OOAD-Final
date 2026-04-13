@@ -1,12 +1,9 @@
 package buttons;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-
 import draw.OvalCreate;
 import gui.Canvas;
 import gui.ToolBar;
-import objects.Oval;
 
 public class OvalButton extends ButtonAbstract {
     public OvalButton(Canvas canvas, ToolBar toolBar) {

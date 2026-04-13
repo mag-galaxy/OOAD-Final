@@ -1,8 +1,6 @@
 package buttons;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-
 import draw.CompositionCreate;
 import gui.Canvas;
 import gui.ToolBar;
