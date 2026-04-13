@@ -32,7 +32,7 @@ public class Rect extends BasicAbstract {
     @Override
     public void draw(Graphics g) {
         // 1. 畫主體 (目前預設白色，可隨 Use Case G 調整顏色 [cite: 131])
-        g.setColor(Color.WHITE);
+        g.setColor(this.getColor());
         g.fillRect(getX(), getY(), getWidth(), getHeight());
         
         // 2. 畫黑色外框

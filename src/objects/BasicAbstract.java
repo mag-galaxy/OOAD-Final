@@ -2,6 +2,7 @@ package objects;
 
 import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
 
@@ -11,8 +12,9 @@ public abstract class BasicAbstract extends ShapeAbstract{
     private int y;
     private int height;
     private int width;
-    private String name = "default";
+    private String name = "";
     private boolean isSelected;
+    protected Color color = Color.WHITE;
 
     public void setX(int x){
         this.x = x;
@@ -60,6 +62,25 @@ public abstract class BasicAbstract extends ShapeAbstract{
 
     public boolean getIsSelected(){
         return isSelected;
+    }
+
+    public void setColor(Color color){
+        this.color = color;
+    }
+
+    public Color getColor(){
+        return this.color;
+    }
+
+    public ArrayList<Port> getPorts(){
+        return this.ports;
+    }
+
+    @Override
+    public boolean isInside(Point p) {
+        // 檢查座標是否在物件的長方形區域內
+        return (p.x >= this.x && p.x <= this.x + this.width &&
+                p.y >= this.y && p.y <= this.y + this.height);
     }
 
     protected void drawLabel(Graphics g) {

@@ -1,15 +1,21 @@
 package buttons;
 
 import java.awt.event.ActionEvent;
+import draw.RectCreate;
+import gui.Canvas;
+import gui.ToolBar;
 
 public class RectButton extends ButtonAbstract {
-    public RectButton() {
-        super("rect");
+    public RectButton(Canvas canvas, ToolBar toolBar) {
+        super("rect", canvas, toolBar);
         setIcon("rect");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // 通知 Canvas 進入創建 Rect 模式 [cite: 16]
+        toolBar.resetButtonColor();
+        this.setSelectedStyle();
+        canvas.setBasicDraw(new RectCreate());
+        canvas.setLinkDraw(null);
     }
 }

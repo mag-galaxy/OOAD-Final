@@ -6,15 +6,17 @@ import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import gui.Canvas;
+import gui.ToolBar;
 
 public abstract class ButtonAbstract extends JButton implements ActionListener{
     
-    protected String modeName;
     protected Canvas canvas;
+    protected ToolBar toolBar;
 
-    public ButtonAbstract(String label) {
+    public ButtonAbstract(String label, Canvas canvas, ToolBar toolBar) {
         super(label);
-        this.modeName = label;
+        this.canvas = canvas;
+        this.toolBar = toolBar;
         this.setBackground(Color.WHITE); // 預設背景顏色 
         this.setFocusPainted(false);
         this.addActionListener(this); // 綁定點擊事件

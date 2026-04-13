@@ -21,6 +21,10 @@ public class Port extends ShapeAbstract{
         this.ratioY = ry;
     }
 
+    public BasicAbstract getOwner(){
+        return this.owner;
+    }
+
     // 新增線段紀錄
     public void addStartLink(LinkAbstract link) { startLinks.add(link); }
     public void addEndLink(LinkAbstract link) { endLinks.add(link); }
