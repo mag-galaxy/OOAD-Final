@@ -8,14 +8,17 @@ import java.util.ArrayList;
 public class Port extends ShapeAbstract{
     
     private BasicAbstract owner;
-    private double ratioX; // 相對寬度比例 [0, 1]
-    private double ratioY; // 相對高度比例 [0, 1]
-    private final int PORT_SIZE = 8; // 黑點大小
+    private double ratioX;
+    private double ratioY;
+    private final int PORT_SIZE = 8;
+    private final Color PORT_COLOR = Color.BLACK;
 
-    private ArrayList<LinkAbstract> startLinks = new ArrayList<>();
-    private ArrayList<LinkAbstract> endLinks = new ArrayList<>();
+    private ArrayList<LinkAbstract> startLinks;
+    private ArrayList<LinkAbstract> endLinks;
 
     public Port(BasicAbstract owner, double rx, double ry) {
+        this.startLinks = new ArrayList<>();
+        this.endLinks = new ArrayList<>();
         this.owner = owner;
         this.ratioX = rx;
         this.ratioY = ry;
@@ -25,28 +28,30 @@ public class Port extends ShapeAbstract{
         return this.owner;
     }
 
-    // 新增線段紀錄
-    public void addStartLink(LinkAbstract link) { startLinks.add(link); }
-    public void addEndLink(LinkAbstract link) { endLinks.add(link); }
+    public void addStartLink(LinkAbstract link) { 
+        startLinks.add(link);
+    }
 
-    // 取得絕對座標，供 Link 繪製使用
+    public void addEndLink(LinkAbstract link) {
+        endLinks.add(link);
+    }
+
     public Point getAbsolutePosition() {
         int absX = (int) (owner.getX() + owner.getWidth() * ratioX);
         int absY = (int) (owner.getY() + owner.getHeight() * ratioY);
         return new Point(absX, absY);
     }
 
-    // 判斷滑鼠是否點中此 Port (用於 Use Case B)
     public boolean isInside(Point p) {
         Point abs = getAbsolutePosition();
         return (p.x >= abs.x - PORT_SIZE && p.x <= abs.x + PORT_SIZE &&
                 p.y >= abs.y - PORT_SIZE && p.y <= abs.y + PORT_SIZE);
     }
 
+    @Override
     public void draw(Graphics g) {
         Point abs = getAbsolutePosition();
-        g.setColor(Color.BLACK);
+        g.setColor(PORT_COLOR);
         g.fillRect(abs.x - PORT_SIZE / 2, abs.y - PORT_SIZE / 2, PORT_SIZE, PORT_SIZE);
     }   
-    
 }

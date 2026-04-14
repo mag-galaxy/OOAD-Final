@@ -3,6 +3,7 @@ package objects;
 import java.awt.*;
 
 public class Composition extends LinkAbstract {
+
     public Composition(Port start, Port end) {
         super.createLink(start, end);
     }
@@ -18,19 +19,17 @@ public class Composition extends LinkAbstract {
     }
 
     private void drawArrow(Graphics2D g2, Point p1, Point p2) {
-        double size = 12; // 菱形的大小
+        double size = 12;
         double theta = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 
         Polygon diamond = new Polygon();
-        // 頂點 (連接在 Port 上的點)
         diamond.addPoint(p1.x, p1.y);
-        // 計算菱形的另外三個頂點
         diamond.addPoint(
             (int) (p1.x + size * Math.cos(theta + Math.toRadians(30))),
             (int) (p1.y + size * Math.sin(theta + Math.toRadians(30)))
         );
         diamond.addPoint(
-            (int) (p1.x + size * 2 * Math.cos(theta)), // 菱形的後方尖端
+            (int) (p1.x + size * 2 * Math.cos(theta)),
             (int) (p1.y + size * 2 * Math.sin(theta))
         );
         diamond.addPoint(

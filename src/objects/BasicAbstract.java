@@ -78,7 +78,6 @@ public abstract class BasicAbstract extends ShapeAbstract{
 
     @Override
     public boolean isInside(Point p) {
-        // 檢查座標是否在物件的長方形區域內
         return (p.x >= this.x && p.x <= this.x + this.width &&
                 p.y >= this.y && p.y <= this.y + this.height);
     }
@@ -86,14 +85,14 @@ public abstract class BasicAbstract extends ShapeAbstract{
     protected void drawLabel(Graphics g) {
         g.setColor(Color.BLACK);
         FontMetrics fm = g.getFontMetrics();
-        // 計算文字置中的座標
+
         int textX = getX() + (getWidth() - fm.stringWidth(getName())) / 2;
         int textY = getY() + (getHeight() + fm.getAscent()) / 2 - 2; 
         g.drawString(getName(), textX, textY);
     }
 
     protected void drawPorts(java.awt.Graphics g) {
-        if (getIsSelected()) { // 只有在被選取狀態才顯示 ports
+        if (getIsSelected()) {
             for (Port p : ports) {
                 p.draw(g);
             }
