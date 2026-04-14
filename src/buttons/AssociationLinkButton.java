@@ -1,7 +1,6 @@
 package buttons;
 
 import java.awt.event.ActionEvent;
-
 import draw.AssociationCreate;
 import gui.Canvas;
 import gui.ToolBar;
@@ -17,6 +16,6 @@ public class AssociationLinkButton extends ButtonAbstract {
         toolBar.resetButtonColor();
         this.setSelectedStyle();
         canvas.setBasicDraw(null);
-        canvas.setLinkDraw(new AssociationCreate()); // 關閉連線模式
+        canvas.setLinkDraw(new AssociationCreate());
     }
 }

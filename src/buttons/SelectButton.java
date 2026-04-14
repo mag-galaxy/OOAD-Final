@@ -16,7 +16,7 @@ public class SelectButton extends ButtonAbstract {
     public void actionPerformed(ActionEvent e) {
         toolBar.resetButtonColor();
         this.setBackground(Color.GRAY);
-        canvas.setLinkDraw(null);
         canvas.setBasicDraw(null);
+        canvas.setLinkDraw(null);
     }    
 }

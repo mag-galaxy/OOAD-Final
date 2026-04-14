@@ -12,17 +12,21 @@ public abstract class ButtonAbstract extends JButton implements ActionListener{
     
     protected Canvas canvas;
     protected ToolBar toolBar;
+    private final int ICON_WIDTH = 40;
+    private final int ICON_HEIGHT =40;
 
     public ButtonAbstract(String label, Canvas canvas, ToolBar toolBar) {
         super(label);
         this.canvas = canvas;
         this.toolBar = toolBar;
-        this.setBackground(Color.WHITE); // 預設背景顏色 
+        this.setBackground(Color.WHITE);
         this.setFocusPainted(false);
-        this.addActionListener(this); // 綁定點擊事件
+        this.addActionListener(this);
     }
 
-    // 提供給外部統一變色的方法
+    @Override
+    public abstract void actionPerformed(ActionEvent e);
+
     public void setSelectedStyle() {
         this.setBackground(Color.BLACK);
         this.setForeground(Color.WHITE);
@@ -32,9 +36,6 @@ public abstract class ButtonAbstract extends JButton implements ActionListener{
         this.setBackground(Color.WHITE);
         this.setForeground(Color.BLACK);
     }
-
-    @Override
-    public abstract void actionPerformed(ActionEvent e);
     
     public void setIcon(String iconName){
         try {
@@ -45,7 +46,7 @@ public abstract class ButtonAbstract extends JButton implements ActionListener{
                 ImageIcon icon = new ImageIcon(imgURL);
                 
                 Image img = icon.getImage();
-                Image scaledImg = img.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+                Image scaledImg = img.getScaledInstance(ICON_WIDTH, ICON_HEIGHT, Image.SCALE_SMOOTH);
                 this.setIcon(new ImageIcon(scaledImg));
             }
         } 
