@@ -1,7 +1,6 @@
 package menu;
 
 import java.awt.event.ActionEvent;
-
 import gui.Canvas;
 
 public class MenuGroup extends MenuItemAbstract{

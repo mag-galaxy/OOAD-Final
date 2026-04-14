@@ -5,9 +5,12 @@ import gui.Canvas;
 import javax.swing.*;
 
 public class MenuBar extends JMenuBar {
+    public JMenu fileMenu;
+    public JMenu editMenu;
+    
     public MenuBar(Canvas canvas){
-        JMenu fileMenu = new JMenu("File");
-        JMenu editMenu = new JMenu("Edit");
+        fileMenu = new JMenu("File");
+        editMenu = new JMenu("Edit");
 
         editMenu.add(new MenuGroup(canvas));
         editMenu.add(new MenuUngroup(canvas));
