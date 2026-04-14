@@ -11,6 +11,8 @@ import draw.LinkDrawInterface;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,9 +24,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public ArrayList<ShapeAbstract> shapeList;
     public ArrayList<LinkAbstract> lineList;
     private int currentDepth = 0;
-    private Port startPort = null;      // 紀錄連線起點
-    private Point lastMousePoint;       // 紀錄上一次滑鼠的位置
-    private BasicAbstract draggingObj;  // 目前正在拖拽的物件
+    private Port startPort = null;
+    private Point lastMousePoint;
+    private BasicAbstract draggingObj;
+    private CanvasListener cListener;
 
     // constructor
     public Canvas() {
@@ -52,7 +55,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             startPort = findPortAt(e.getPoint());
         } 
         // C. select object
-        else {
+        else if(drawBasic == null && drawLink == null){
             selectObjectAt(e.getPoint());
             ShapeAbstract top = shapeList.get(shapeList.size() - 1);
             if (((BasicAbstract) top).getIsSelected()) {
@@ -173,16 +176,29 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         repaint();
     }
 
+    public void setCanvasListener(CanvasListener l){
+        this.cListener = l;
+    }
+
     private void resetToSelectMode() {
         this.drawBasic = null;
         this.drawLink = null;
-        // 這裡需要透過 MainFrame 取得 ToolBar 的參考來呼叫 selectDefaultButton()
-        // 例如：mainFrame.getToolBar().selectDefaultButton();
+        if(cListener != null){
+            cListener.onActionCompleted();;
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         //
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (ShapeAbstract s : shapeList) {
+            s.draw(g);
+        }
     }
 
     public void groupObjects() {
