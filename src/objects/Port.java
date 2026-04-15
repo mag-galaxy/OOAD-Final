@@ -11,6 +11,7 @@ public class Port extends ShapeAbstract{
     private double ratioX;
     private double ratioY;
     private final int PORT_SIZE = 8;
+    private final int CLICK_RANGE = 12;
     private final Color PORT_COLOR = Color.BLACK;
 
     private ArrayList<LinkAbstract> startLinks;
@@ -42,10 +43,10 @@ public class Port extends ShapeAbstract{
         return new Point(absX, absY);
     }
 
-    public boolean isInside(Point p) {
+    public boolean isInside(Point p) { // is p inside this Port
         Point abs = getAbsolutePosition();
-        return (p.x >= abs.x - PORT_SIZE && p.x <= abs.x + PORT_SIZE &&
-                p.y >= abs.y - PORT_SIZE && p.y <= abs.y + PORT_SIZE);
+        return (p.x >= abs.x - CLICK_RANGE && p.x <= abs.x + CLICK_RANGE &&
+                p.y >= abs.y - CLICK_RANGE && p.y <= abs.y + CLICK_RANGE);
     }
 
     @Override

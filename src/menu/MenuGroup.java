@@ -11,6 +11,5 @@ public class MenuGroup extends MenuItemAbstract{
     @Override
     public void actionPerformed(ActionEvent e) {
         canvas.groupObjects();
-        System.out.println("Objects Grouped");
     }
 }

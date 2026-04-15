@@ -1,11 +1,16 @@
 package objects;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Composite extends ShapeAbstract{
     private ArrayList<ShapeAbstract> members = new ArrayList<>();
+    private boolean isSelected;
 
     public void addMember(ShapeAbstract shape) {
         members.add(shape);
@@ -34,17 +39,49 @@ public class Composite extends ShapeAbstract{
     }
 
     @Override
+    public int getWidth(){
+        return getBoundary().width;
+    }
+
+    @Override
+    public int getHeight(){
+        return getBoundary().height;
+    }
+
+    @Override
     public void draw(Graphics g) {
         for (ShapeAbstract s : members) {
             s.draw(g);
         }
         if (this.getIsSelected()) {
-            drawGroupBoundingBox(g);
+            drawBoundingBox(g);
         }
     }
 
-    private void drawGroupBoundingBox(Graphics g) {
-        // 實作計算成員最大/最小 x, y 的邏輯
+    private void drawBoundingBox(Graphics g){
+        Graphics2D g2d = (Graphics2D) g.create();
+        Rectangle bound = getBoundary();
+        float[] dash = {5.0f};
+        g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
+        g2d.setColor(Color.GRAY);
+        g2d.drawRect(bound.x - 5, bound.y - 5, bound.width + 10, bound.height + 10);
+        g2d.dispose();
+    }
+
+    private Rectangle getBoundary() {
+        if(members.isEmpty()) {
+            return new Rectangle();
+        }
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
+
+        for (ShapeAbstract s : members) {
+            minX = Math.min(minX, s.getX());
+            minY = Math.min(minY, s.getY());
+            maxX = Math.max(maxX, s.getX() + s.getWidth());
+            maxY = Math.max(maxY, s.getY() + s.getHeight());
+        }
+        return new Rectangle(minX, minY, maxX - minX, maxY - minY);
     }
 
     @Override
@@ -54,4 +91,14 @@ public class Composite extends ShapeAbstract{
         }
         return false;
     }
+
+    @Override
+    public void setIsSelected(boolean selected) {
+        this.isSelected = selected;
+    }
+
+    @Override
+    public boolean getIsSelected(){
+        return this.isSelected;
+    }   
 }

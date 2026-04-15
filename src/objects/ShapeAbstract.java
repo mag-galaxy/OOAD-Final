@@ -19,6 +19,10 @@ public abstract class ShapeAbstract {
      public int getX() { return -1;}
      public void setY(int y) {};
      public int getY() { return -1;}
+     public void setWidth(int width) {}
+     public int getWidth() {return -1;}
+     public void setHeight(int height) {}
+     public int getHeight() {return -1;}
 
      public void setDepth(int d){
           this.depth = d;

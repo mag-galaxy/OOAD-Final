@@ -16,34 +16,42 @@ public abstract class BasicAbstract extends ShapeAbstract{
     private boolean isSelected;
     protected Color color = Color.WHITE;
 
+    @Override
     public void setX(int x){
         this.x = x;
     }
 
+    @Override
     public int getX(){
         return this.x;
     }
 
+    @Override
     public void setY(int y){
         this.y = y;
     }
 
+    @Override
     public int getY(){
         return this.y;
     }
 
+    @Override
     public void setHeight(int height){
         this.height = height;
     }
 
+    @Override
     public int getHeight(){
         return this.height;
     }
 
+    @Override
     public void setWidth(int width){
         this.width = width;
     }
 
+    @Override
     public int getWidth(){
         return this.width;
     }
