@@ -11,7 +11,7 @@ import objects.ShapeAbstract;
 
 public class MenuLabel extends MenuItemAbstract{
     public MenuLabel(Canvas canvas) {
-        super("Change Object Name", canvas);
+        super("Label", canvas);
     }
 
     @Override

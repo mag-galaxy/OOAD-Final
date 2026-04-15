@@ -35,8 +35,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private Point lastMousePoint;
     private ShapeAbstract draggingObj;
     private CanvasListener cListener;
-    private boolean showAllPorts = false;
     private Rectangle selectRect;
+    private Rectangle originalBound;
 
     // constructor
     public Canvas() {
@@ -49,32 +49,34 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     // mouse action
     @Override
     public void mousePressed(MouseEvent e){
-        // A. create basic object
+        Point p = e.getPoint();
+
         if (drawBasic != null) {
-            // call Interface to create Rect or Oval
-            BasicAbstract newObj = drawBasic.createBasic(e.getX(), e.getY(), currentDepth++);
+            BasicAbstract newObj = drawBasic.createBasic(p.x, p.y, currentDepth++);
             shapeList.add(newObj);
-            
             resetToSelectMode();
-        } 
-        // B. create link object
+        }
+
         else if (drawLink != null) {
-            // chech if mouse is at a port
-            startPort = findPortAt(e.getPoint());
-        } 
-        // C. select object
-        else if(drawBasic == null && drawLink == null){
-            selectObjectAt(e.getPoint());
+            startPort = findPortAt(p);
+        }
 
-            if(getSelectedObject() == null){
-                selectStart = e.getPoint();
-                selectRect = new Rectangle(selectStart);
+        else {
+            selectObjectAt(p);
+            ShapeAbstract selected = getSelectedObject();
+
+            if(selected == null){
+                selectStart = p;
+                selectRect = new Rectangle(p);
             }
-
-            ShapeAbstract top = shapeList.get(shapeList.size() - 1);
-            if (top.getIsSelected()) {
-                draggingObj = top;
-                lastMousePoint = e.getPoint();
+            else if(findPortAt(p) == null){
+                draggingObj = selected;
+                lastMousePoint = p;
+            }
+            else{
+                resizePort = findPortAt(p);
+                BasicAbstract target = resizePort.getOwner();
+                originalBound = new Rectangle(target.getX(), target.getY(), target.getWidth(), target.getHeight());
             }
         }
         repaint();
@@ -91,7 +93,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             draggingObj.setY(draggingObj.getY() + dy);
 
             lastMousePoint = e.getPoint();
-            repaint();
         }
 
         if (selectStart != null) {
@@ -101,8 +102,35 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             int height = Math.abs(e.getY() - selectStart.y);
             
             selectRect = new Rectangle(x, y, width, height);
-            repaint();
         }
+
+        if (resizePort != null) {
+            BasicAbstract target = resizePort.getOwner();
+            Point p = e.getPoint();
+            
+            int x1 = originalBound.x;
+            int y1 = originalBound.y;
+            int x2 = x1 + originalBound.width;
+            int y2 = y1 + originalBound.height;
+
+            if (resizePort.getRatioX() == 0) x1 = p.x;
+            else if (resizePort.getRatioX() == 1) x2 = p.x;
+
+            if (resizePort.getRatioY() == 0) y1 = p.y;
+            else if (resizePort.getRatioY() == 1) y2 = p.y;
+
+            int newX = Math.min(x1, x2);
+            int newY = Math.min(y1, y2);
+            int newW = Math.abs(x2 - x1);
+            int newH = Math.abs(y2 - y1);
+
+            // 更新物件
+            target.setX(newX);
+            target.setY(newY);
+            target.setWidth(newW);
+            target.setHeight(newH);
+        }
+        repaint();
     }
 
     @Override
@@ -147,6 +175,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             selectRect = null;
             selectStart = null;
         }
+        resizePort = null;
+        originalBound = null;
         repaint();
     }
 
@@ -163,7 +193,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     // called by buttons for drawing setting
     public void setBasicDraw(BasicDrawInterface strategy) {
         this.drawBasic = strategy;
-        this.showAllPorts = false;
         if(strategy != null) {
             System.out.println("Mode Switched: Basic Object Create");
         }
@@ -171,14 +200,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public void setLinkDraw(LinkDrawInterface strategy) {
         this.drawLink = strategy;
-        this.showAllPorts = true;
         if(strategy != null) {
             System.out.println("Mode Switched: Link Connection");
         }
-    }
-
-    public boolean isShowAllPorts(){
-        return this.showAllPorts;
     }
 
     private Port findPortAt(Point p) {
@@ -197,18 +221,18 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     private void selectObjectAt(Point p) {
-        // 1. 先將所有物件設為未選取
+        // reset everyone to unselected
         for (ShapeAbstract s : shapeList) {
             s.setIsSelected(false);
         }
 
-        // 2. 從最後面 (視覺最上層) 開始找點中了誰
+        // find curser posision
         for (int i = shapeList.size() - 1; i >= 0; i--) {
             ShapeAbstract s = shapeList.get(i);          
             if (s.isInside(p)) {
                 s.setIsSelected(true);
 
-                // 3. 置頂邏輯：將選中的物件移到 List 的最後面
+                // add to top of list
                 shapeList.remove(i);
                 shapeList.add(s);
                 break; 
@@ -224,7 +248,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private void resetToSelectMode() {
         this.drawBasic = null;
         this.drawLink = null;
-        this.showAllPorts = false;
         if(cListener != null){
             cListener.onActionCompleted();;
         }

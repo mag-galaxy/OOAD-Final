@@ -6,7 +6,7 @@ import java.awt.*;
 public class Oval extends BasicAbstract {
     private final int PORT_AMOUNT = 4;
     private final int WIDTH = 100;
-    private final int HEIGHT = 60;
+    private final int HEIGHT = 80;
 
     public Oval(int x, int y, int depth) {
         this.setDepth(depth);

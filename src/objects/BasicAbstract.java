@@ -15,6 +15,8 @@ public abstract class BasicAbstract extends ShapeAbstract{
     private String name = "";
     private boolean isSelected;
     protected Color color = Color.WHITE;
+    private final int MIN_WIDTH = 50;
+    private final int MIN_HEIGHT = 40;
 
     @Override
     public void setX(int x){
@@ -38,7 +40,7 @@ public abstract class BasicAbstract extends ShapeAbstract{
 
     @Override
     public void setHeight(int height){
-        this.height = height;
+        this.height = (height >= MIN_HEIGHT) ? height : MIN_HEIGHT;
     }
 
     @Override
@@ -48,7 +50,7 @@ public abstract class BasicAbstract extends ShapeAbstract{
 
     @Override
     public void setWidth(int width){
-        this.width = width;
+        this.width = (width >= MIN_WIDTH) ? width : MIN_WIDTH;
     }
 
     @Override

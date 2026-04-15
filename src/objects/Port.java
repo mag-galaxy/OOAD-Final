@@ -29,6 +29,14 @@ public class Port extends ShapeAbstract{
         return this.owner;
     }
 
+    public double getRatioX(){
+        return this.ratioX;
+    }
+
+    public double getRatioY(){
+        return this.ratioY;
+    }
+
     public void addStartLink(LinkAbstract link) { 
         startLinks.add(link);
     }
