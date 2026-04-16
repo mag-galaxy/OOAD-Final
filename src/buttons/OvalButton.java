@@ -1,21 +1,51 @@
 package buttons;
 
-import java.awt.event.ActionEvent;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.SwingUtilities;
+
 import draw.OvalCreate;
 import gui.Canvas;
 import gui.ToolBar;
 
-public class OvalButton extends ButtonAbstract {
+public class OvalButton extends ButtonAbstract implements MouseListener{
     public OvalButton(Canvas canvas, ToolBar toolBar) {
         super("oval", canvas, toolBar);
         setIcon("oval");
+        this.addMouseListener(this);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void mouseClicked(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
         toolBar.resetButtonColor();
         this.setSelectedStyle();
-        canvas.setBasicDraw(new OvalCreate());
-        canvas.setLinkDraw(null);
     }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        Point dropPoint = e.getPoint();
+        Point pOnCanvas = SwingUtilities.convertPoint(this, dropPoint, canvas);
+        if (canvas.contains(pOnCanvas)){
+            canvas.addShape(new OvalCreate(), pOnCanvas.x, pOnCanvas.y);
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
+
+    // @Override
+    // public void actionPerformed(ActionEvent e) {
+    //     toolBar.resetButtonColor();
+    //     this.setSelectedStyle();
+    //     canvas.setBasicDraw(new OvalCreate());
+    //     canvas.setLinkDraw(null);
+    // }
 }

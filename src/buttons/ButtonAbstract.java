@@ -3,12 +3,10 @@ package buttons;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import gui.Canvas;
 import gui.ToolBar;
 
-public abstract class ButtonAbstract extends JButton implements ActionListener{
+public abstract class ButtonAbstract extends JButton{
     
     protected Canvas canvas;
     protected ToolBar toolBar;
@@ -21,11 +19,11 @@ public abstract class ButtonAbstract extends JButton implements ActionListener{
         this.toolBar = toolBar;
         this.setBackground(Color.WHITE);
         this.setFocusPainted(false);
-        this.addActionListener(this);
+        // this.addActionListener(this);
     }
 
-    @Override
-    public abstract void actionPerformed(ActionEvent e);
+    // @Override
+    // public abstract void actionPerformed(ActionEvent e);
 
     public void setSelectedStyle() {
         this.setBackground(Color.BLACK);

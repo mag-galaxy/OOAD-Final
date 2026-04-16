@@ -25,7 +25,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public ArrayList<BasicAbstract> objList;
     public ArrayList<LinkAbstract> lineList;
 
-    private BasicDrawInterface drawBasic = null;
     private LinkDrawInterface drawLink = null;
     private int currentDepth = 0;
     private Port startPort = null;
@@ -50,13 +49,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void mousePressed(MouseEvent e){
         Point p = e.getPoint();
 
-        if (drawBasic != null) {
-            BasicAbstract newObj = drawBasic.createBasic(p.x, p.y, currentDepth++);
-            objList.add(newObj);
-            resetToSelectMode();
-        }
-
-        else if (drawLink != null) {
+        if (drawLink != null) {
             startPort = findPortAt(p);
         }
 
@@ -189,19 +182,18 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         //
     }
 
-    // called by buttons for drawing setting
-    public void setBasicDraw(BasicDrawInterface strategy) {
-        this.drawBasic = strategy;
-        if(strategy != null) {
-            System.out.println("Mode Switched: Basic Object Create");
-        }
-    }
-
     public void setLinkDraw(LinkDrawInterface strategy) {
         this.drawLink = strategy;
         if(strategy != null) {
             System.out.println("Mode Switched: Link Connection");
         }
+    }
+
+    public void addShape(BasicDrawInterface strategy, int dropX, int dropY){
+        BasicAbstract newObj = strategy.createBasic(dropX, dropY, currentDepth++);
+        objList.add(newObj);
+        resetToSelectMode();
+        repaint();
     }
 
     private Port findPortAt(Point p) {
@@ -247,10 +239,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     private void resetToSelectMode() {
-        this.drawBasic = null;
         this.drawLink = null;
         if(cListener != null){
-            cListener.onActionCompleted();;
+            cListener.onActionCompleted();
         }
     }
 
