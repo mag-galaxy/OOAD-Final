@@ -25,13 +25,6 @@ public class MainFrame extends JFrame{
         toolBar = new ToolBar(canvas);
         menuBar = new MenuBar(canvas);
 
-        canvas.setCanvasListener(new CanvasListener() {
-            @Override
-            public void onActionCompleted(){
-                toolBar.selectDefaultButton();
-            }
-        });
-
         this.setLayout(new BorderLayout());
         this.setJMenuBar(menuBar);
         this.add(toolBar, BorderLayout.WEST);

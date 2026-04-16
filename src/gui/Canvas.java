@@ -33,7 +33,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private Point lastMousePoint;
     private BasicAbstract draggingObj;
     private BasicAbstract hoveredObj;
-    private CanvasListener cListener;
     private Rectangle selectRect;
     private Rectangle originalBound;
 
@@ -88,7 +87,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             lastMousePoint = e.getPoint();
         }
 
-        if (selectStart != null) {
+        else if (selectStart != null) {
             int x = Math.min(e.getX(), selectStart.x);
             int y = Math.min(e.getY(), selectStart.y);
             int width = Math.abs(e.getX() - selectStart.x);
@@ -97,7 +96,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             selectRect = new Rectangle(x, y, width, height);
         }
 
-        if (resizePort != null) {
+        else if (resizePort != null) {
             BasicAbstract target = resizePort.getOwner();
             Point p = e.getPoint();
             
@@ -117,7 +116,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             int newW = Math.abs(x2 - x1);
             int newH = Math.abs(y2 - y1);
 
-            // 更新物件
             target.setX(newX);
             target.setY(newY);
             target.setWidth(newW);
@@ -150,7 +148,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
                 }
             }
             startPort = null;
-            resetToSelectMode();
         }
 
         else if (draggingObj != null) {
@@ -168,8 +165,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             selectRect = null;
             selectStart = null;
         }
-        resizePort = null;
-        originalBound = null;
+
+        else if (resizePort != null){
+            resizePort = null;
+            originalBound = null;
+        }
         repaint();
     }
 
@@ -258,21 +258,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             }
         }
         repaint();
-    }
-
-    public void setCanvasListener(CanvasListener l){
-        this.cListener = l;
-    }
-
-    private void resetToSelectMode() {
-        this.drawLink = null;
-        if(cListener != null){
-            cListener.onActionCompleted();
-        }
-        if (hoveredObj != null) {
-            hoveredObj.setIsHovered(false);
-            hoveredObj = null;
-        }
     }
 
     @Override
