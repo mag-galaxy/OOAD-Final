@@ -1,7 +1,6 @@
 package gui;
 
 import objects.Port;
-import objects.ShapeAbstract;
 import objects.LinkAbstract;
 import objects.BasicAbstract;
 import objects.Composite;

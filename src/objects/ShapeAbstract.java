@@ -1,7 +1,6 @@
 package objects;
 
 import java.awt.Graphics;
-import java.awt.Point;
 
 public abstract class ShapeAbstract {
 
