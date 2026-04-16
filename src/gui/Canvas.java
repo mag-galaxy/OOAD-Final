@@ -219,7 +219,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void addShape(BasicDrawInterface strategy, int dropX, int dropY){
         BasicAbstract newObj = strategy.createBasic(dropX, dropY, currentDepth++);
         objList.add(newObj);
-        resetToSelectMode();
         repaint();
     }
 

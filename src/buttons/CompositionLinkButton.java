@@ -16,8 +16,7 @@ public class CompositionLinkButton extends ButtonAbstract implements ActionListe
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        toolBar.resetButtonColor();
-        this.setSelectedStyle();
+        toolBar.setActiveBtn(this);
         canvas.setLinkDraw(new CompositionCreate());
     }
 }

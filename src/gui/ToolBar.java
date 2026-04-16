@@ -16,6 +16,7 @@ import buttons.SelectButton;
 public class ToolBar extends JPanel{
     private List<ButtonAbstract> allButtons = new ArrayList<>();
     private Canvas canvas;
+    public ButtonAbstract activeModeButton;
     private final int SELECT_INX = 0;
 
     public ToolBar(Canvas canvas) {
@@ -23,6 +24,7 @@ public class ToolBar extends JPanel{
         this.setLayout(new GridLayout(6, 1, 5, 5));
         this.setBackground(Color.LIGHT_GRAY);
         initializeButtons();
+        activeModeButton = allButtons.get(0);
     }
 
     private void initializeButtons() {
@@ -48,5 +50,11 @@ public class ToolBar extends JPanel{
     public void selectDefaultButton() {
         resetButtonColor();
         allButtons.get(SELECT_INX).setSelectedStyle(); 
+    }
+
+    public void setActiveBtn(ButtonAbstract activeBtn){
+        resetButtonColor();
+        activeBtn.setSelectedStyle();
+        this.activeModeButton = activeBtn;
     }
 }

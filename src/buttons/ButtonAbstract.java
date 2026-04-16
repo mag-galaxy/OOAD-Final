@@ -19,11 +19,7 @@ public abstract class ButtonAbstract extends JButton{
         this.toolBar = toolBar;
         this.setBackground(Color.WHITE);
         this.setFocusPainted(false);
-        // this.addActionListener(this);
     }
-
-    // @Override
-    // public abstract void actionPerformed(ActionEvent e);
 
     public void setSelectedStyle() {
         this.setBackground(Color.BLACK);

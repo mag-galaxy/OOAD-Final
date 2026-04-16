@@ -33,6 +33,8 @@ public class OvalButton extends ButtonAbstract implements MouseListener{
         if (canvas.contains(pOnCanvas)){
             canvas.addShape(new OvalCreate(), pOnCanvas.x, pOnCanvas.y);
         }
+        toolBar.resetButtonColor();
+        toolBar.activeModeButton.setSelectedStyle();
     }
 
     @Override
@@ -40,12 +42,4 @@ public class OvalButton extends ButtonAbstract implements MouseListener{
 
     @Override
     public void mouseExited(MouseEvent e) {}
-
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    //     toolBar.resetButtonColor();
-    //     this.setSelectedStyle();
-    //     canvas.setBasicDraw(new OvalCreate());
-    //     canvas.setLinkDraw(null);
-    // }
 }

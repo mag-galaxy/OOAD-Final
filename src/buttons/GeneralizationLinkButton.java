@@ -16,8 +16,7 @@ public class GeneralizationLinkButton extends ButtonAbstract implements ActionLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        toolBar.resetButtonColor();
-        this.setSelectedStyle();
+        toolBar.setActiveBtn(this);
         canvas.setLinkDraw(new GeneralizationCreate());
     }
 }

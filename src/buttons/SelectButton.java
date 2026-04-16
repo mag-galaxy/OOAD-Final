@@ -1,6 +1,5 @@
 package buttons;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,8 +15,7 @@ public class SelectButton extends ButtonAbstract implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        toolBar.resetButtonColor();
-        this.setBackground(Color.GRAY);
+        toolBar.setActiveBtn(this);
         canvas.setLinkDraw(null);
     }    
 }
