@@ -29,12 +29,22 @@ public class Composite extends BasicAbstract{
     }
 
     @Override
+    public int getX(){
+        return getBoundary().x;
+    }
+
+    @Override
     public void setY(int newY) {
         int dy = newY - this.getY();
         for (BasicAbstract s : members) {
             s.setY(s.getY() + dy);
         }
         super.setY(newY);
+    }
+
+    @Override
+    public int getY(){
+        return getBoundary().y;
     }
 
     @Override
@@ -52,7 +62,7 @@ public class Composite extends BasicAbstract{
         for (BasicAbstract s : members) {
             s.draw(g);
         }
-        if (this.getIsSelected()) {
+        if (this.getIsSelected() || this.getIsHovered()) {
             drawBoundingBox(g);
         }
     }

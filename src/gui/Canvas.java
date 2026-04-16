@@ -32,6 +32,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private Point selectStart;
     private Point lastMousePoint;
     private BasicAbstract draggingObj;
+    private BasicAbstract hoveredObj;
     private CanvasListener cListener;
     private Rectangle selectRect;
     private Rectangle originalBound;
@@ -152,12 +153,12 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             resetToSelectMode();
         }
 
-        if (draggingObj != null) {
+        else if (draggingObj != null) {
             draggingObj = null;
             lastMousePoint = null;
         }
 
-        if (selectRect != null){
+        else if (selectRect != null){
             for (BasicAbstract s : objList) {
                 Rectangle objRect = new Rectangle(s.getX(), s.getY(), s.getWidth(), s.getHeight());
                 if (selectRect.contains(objRect)) {
@@ -170,6 +171,32 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         resizePort = null;
         originalBound = null;
         repaint();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e){
+        if (drawLink == null) {
+            BasicAbstract newlyHovered = null;
+
+            for (int i = objList.size() - 1; i >= 0; i--) {
+                BasicAbstract s = objList.get(i);
+                if (s.isInside(e.getPoint())) {
+                    newlyHovered = s;
+                    break;
+                }
+            }
+
+            if (hoveredObj != newlyHovered) {
+                if (hoveredObj != null) {
+                    hoveredObj.setIsHovered(false);
+                }
+                if (newlyHovered != null) {
+                    newlyHovered.setIsHovered(true);
+                }
+                hoveredObj = newlyHovered;
+                repaint();
+            }
+        }
     }
 
     @Override
@@ -243,11 +270,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         if(cListener != null){
             cListener.onActionCompleted();
         }
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        //
+        if (hoveredObj != null) {
+            hoveredObj.setIsHovered(false);
+            hoveredObj = null;
+        }
     }
 
     @Override

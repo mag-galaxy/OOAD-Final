@@ -14,6 +14,7 @@ public abstract class BasicAbstract extends ShapeAbstract{
     private int width;
     private String name = "";
     private boolean isSelected;
+    private boolean isHover = false;
     protected Color color = Color.WHITE;
     private final int MIN_WIDTH = 50;
     private final int MIN_HEIGHT = 40;
@@ -66,6 +67,14 @@ public abstract class BasicAbstract extends ShapeAbstract{
         return isSelected;
     }
 
+    public void setIsHovered(boolean hovered){
+        this.isHover = hovered;
+    }
+
+    public boolean getIsHovered(){
+        return this.isHover;
+    }
+
     public void setColor(Color color){
         this.color = color;
     }
@@ -93,7 +102,7 @@ public abstract class BasicAbstract extends ShapeAbstract{
     }
 
     protected void drawPorts(java.awt.Graphics g) {
-        if (getIsSelected()) {
+        if ((getIsSelected() || getIsHovered()) && ports != null) {
             for (Port p : ports) {
                 p.draw(g);
             }
