@@ -8,22 +8,21 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-public class Composite extends ShapeAbstract{
-    private ArrayList<ShapeAbstract> members = new ArrayList<>();
-    private boolean isSelected;
+public class Composite extends BasicAbstract{
+    private ArrayList<BasicAbstract> members = new ArrayList<>();
 
-    public void addMember(ShapeAbstract shape) {
+    public void addMember(BasicAbstract shape) {
         members.add(shape);
     }
 
-    public ArrayList<ShapeAbstract> getMembers() {
+    public ArrayList<BasicAbstract> getMembers() {
         return members;
     }
 
     @Override
     public void setX(int newX) {
         int dx = newX - this.getX();
-        for (ShapeAbstract s : members) {
+        for (BasicAbstract s : members) {
             s.setX(s.getX() + dx);
         }
         super.setX(newX);
@@ -32,7 +31,7 @@ public class Composite extends ShapeAbstract{
     @Override
     public void setY(int newY) {
         int dy = newY - this.getY();
-        for (ShapeAbstract s : members) {
+        for (BasicAbstract s : members) {
             s.setY(s.getY() + dy);
         }
         super.setY(newY);
@@ -50,7 +49,7 @@ public class Composite extends ShapeAbstract{
 
     @Override
     public void draw(Graphics g) {
-        for (ShapeAbstract s : members) {
+        for (BasicAbstract s : members) {
             s.draw(g);
         }
         if (this.getIsSelected()) {
@@ -75,7 +74,7 @@ public class Composite extends ShapeAbstract{
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
 
-        for (ShapeAbstract s : members) {
+        for (BasicAbstract s : members) {
             minX = Math.min(minX, s.getX());
             minY = Math.min(minY, s.getY());
             maxX = Math.max(maxX, s.getX() + s.getWidth());
@@ -86,19 +85,9 @@ public class Composite extends ShapeAbstract{
 
     @Override
     public boolean isInside(Point p) {
-        for (ShapeAbstract s : members) {
+        for (BasicAbstract s : members) {
             if (s.isInside(p)) return true;
         }
         return false;
-    }
-
-    @Override
-    public void setIsSelected(boolean selected) {
-        this.isSelected = selected;
-    }
-
-    @Override
-    public boolean getIsSelected(){
-        return this.isSelected;
-    }   
+    }  
 }

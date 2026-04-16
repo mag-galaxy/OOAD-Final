@@ -23,7 +23,7 @@ import java.awt.event.MouseMotionListener;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener{
     
-    public ArrayList<ShapeAbstract> shapeList;
+    public ArrayList<BasicAbstract> objList;
     public ArrayList<LinkAbstract> lineList;
 
     private BasicDrawInterface drawBasic = null;
@@ -33,14 +33,14 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private Port resizePort = null;
     private Point selectStart;
     private Point lastMousePoint;
-    private ShapeAbstract draggingObj;
+    private BasicAbstract draggingObj;
     private CanvasListener cListener;
     private Rectangle selectRect;
     private Rectangle originalBound;
 
     // constructor
     public Canvas() {
-        shapeList = new ArrayList<>();
+        objList = new ArrayList<>();
         lineList = new ArrayList<>();
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -53,7 +53,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         if (drawBasic != null) {
             BasicAbstract newObj = drawBasic.createBasic(p.x, p.y, currentDepth++);
-            shapeList.add(newObj);
+            objList.add(newObj);
             resetToSelectMode();
         }
 
@@ -63,7 +63,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         else {
             selectObjectAt(p);
-            ShapeAbstract selected = getSelectedObject();
+            BasicAbstract selected = getSelectedObject();
 
             if(selected == null){
                 selectStart = p;
@@ -166,7 +166,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         }
 
         if (selectRect != null){
-            for (ShapeAbstract s : shapeList) {
+            for (BasicAbstract s : objList) {
                 Rectangle objRect = new Rectangle(s.getX(), s.getY(), s.getWidth(), s.getHeight());
                 if (selectRect.contains(objRect)) {
                     s.setIsSelected(true);
@@ -207,11 +207,13 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     private Port findPortAt(Point p) {
         // start from the last added object
-        for (int i = shapeList.size() - 1; i >= 0; i--) {
-            ShapeAbstract s = shapeList.get(i);
-            BasicAbstract obj = (BasicAbstract) s;
+        for (int i = objList.size() - 1; i >= 0; i--) {
+            BasicAbstract s = objList.get(i);
             // check if mouse is in a port
-            for (Port port : obj.getPorts()) {
+            if(s.getPorts() == null){
+                continue;
+            }
+            for (Port port : s.getPorts()) {
                 if (port.isInside(p)) {
                     return port;
                 }
@@ -222,19 +224,19 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     private void selectObjectAt(Point p) {
         // reset everyone to unselected
-        for (ShapeAbstract s : shapeList) {
+        for (BasicAbstract s : objList) {
             s.setIsSelected(false);
         }
 
         // find curser posision
-        for (int i = shapeList.size() - 1; i >= 0; i--) {
-            ShapeAbstract s = shapeList.get(i);          
+        for (int i = objList.size() - 1; i >= 0; i--) {
+            BasicAbstract s = objList.get(i);          
             if (s.isInside(p)) {
                 s.setIsSelected(true);
 
                 // add to top of list
-                shapeList.remove(i);
-                shapeList.add(s);
+                objList.remove(i);
+                objList.add(s);
                 break; 
             }
         }
@@ -261,7 +263,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (ShapeAbstract s : shapeList) {
+        for (BasicAbstract s : objList) {
             s.draw(g);
         }
         for (LinkAbstract l: lineList) {
@@ -269,52 +271,52 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         }
         if (selectRect != null) {
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(new Color(0, 120, 215, 50)); // 半透明藍色背景
+            g2d.setColor(new Color(0, 120, 215, 50));
             g2d.fill(selectRect);
-            g2d.setColor(new Color(0, 120, 215));     // 藍色邊框
+            g2d.setColor(new Color(0, 120, 215));
             g2d.draw(selectRect);
         }
     }
 
     public void groupObjects() {
-        List<ShapeAbstract> selectedItems = new ArrayList<>();
+        List<BasicAbstract> selectedItems = new ArrayList<>();
         
         // 1. find selected objects
-        for (int i = shapeList.size() - 1; i >= 0; i--) {
-            ShapeAbstract s = shapeList.get(i);
+        for (int i = objList.size() - 1; i >= 0; i--) {
+            BasicAbstract s = objList.get(i);
             if (s.getIsSelected()) {
                 selectedItems.add(s);
-                shapeList.remove(i);
+                objList.remove(i);
             }
         }
 
         // 2. selected objects > 1
         if (selectedItems.size() > 1) {
             Composite group = new Composite();
-            for (ShapeAbstract s : selectedItems) {
+            for (BasicAbstract s : selectedItems) {
                 s.setIsSelected(false);
                 group.addMember(s);
             }
             group.setIsSelected(true);
-            shapeList.add(group);
+            objList.add(group);
             System.out.println("Objects Grouped");
         }
         else {
-            shapeList.addAll(selectedItems);
+            objList.addAll(selectedItems);
         }
         repaint();
     }
 
     public void ungroupObjects() {
         // find group object
-        for (int i = shapeList.size() - 1; i >= 0; i--) {
-            ShapeAbstract s = shapeList.get(i);
+        for (int i = objList.size() - 1; i >= 0; i--) {
+            BasicAbstract s = objList.get(i);
             if (s.getIsSelected() && s instanceof Composite) {
                 Composite group = (Composite) s;
-                shapeList.remove(i);
-                for (ShapeAbstract member : group.getMembers()) {
+                objList.remove(i);
+                for (BasicAbstract member : group.getMembers()) {
                     member.setIsSelected(true);
-                    shapeList.add(member);
+                    objList.add(member);
                 }
                 break;
             }
@@ -322,10 +324,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         repaint();
     }
 
-    public ShapeAbstract getSelectedObject() {
-        ShapeAbstract selected = null;
+    public BasicAbstract getSelectedObject() {
+        BasicAbstract selected = null;
         int count = 0;
-        for (ShapeAbstract s : shapeList) {
+        for (BasicAbstract s : objList) {
             if (s.getIsSelected()) {
                 selected = s;
                 count++;

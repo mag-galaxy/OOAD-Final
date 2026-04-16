@@ -18,42 +18,34 @@ public abstract class BasicAbstract extends ShapeAbstract{
     private final int MIN_WIDTH = 50;
     private final int MIN_HEIGHT = 40;
 
-    @Override
     public void setX(int x){
         this.x = x;
     }
 
-    @Override
     public int getX(){
         return this.x;
     }
 
-    @Override
     public void setY(int y){
         this.y = y;
     }
 
-    @Override
     public int getY(){
         return this.y;
     }
 
-    @Override
     public void setHeight(int height){
         this.height = (height >= MIN_HEIGHT) ? height : MIN_HEIGHT;
     }
 
-    @Override
     public int getHeight(){
         return this.height;
     }
 
-    @Override
     public void setWidth(int width){
         this.width = (width >= MIN_WIDTH) ? width : MIN_WIDTH;
     }
 
-    @Override
     public int getWidth(){
         return this.width;
     }
@@ -86,7 +78,6 @@ public abstract class BasicAbstract extends ShapeAbstract{
         return this.ports;
     }
 
-    @Override
     public boolean isInside(Point p) {
         return (p.x >= this.x && p.x <= this.x + this.width &&
                 p.y >= this.y && p.y <= this.y + this.height);

@@ -11,19 +11,6 @@ public abstract class ShapeAbstract {
      // abstract methods, every subtype must override
      public abstract void draw(Graphics g);
 
-     // non abstract methods
-     public boolean isInside(Point p) { return false;}
-     public void setIsSelected(boolean selected) {}
-     public boolean getIsSelected() { return false;}
-     public void setX(int x) {};
-     public int getX() { return -1;}
-     public void setY(int y) {};
-     public int getY() { return -1;}
-     public void setWidth(int width) {}
-     public int getWidth() {return -1;}
-     public void setHeight(int height) {}
-     public int getHeight() {return -1;}
-
      public void setDepth(int d){
           this.depth = d;
      }
