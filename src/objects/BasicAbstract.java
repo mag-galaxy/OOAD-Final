@@ -4,18 +4,27 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class BasicAbstract extends ShapeAbstract{
-    public ArrayList<Port> ports;
+    protected ArrayList<Port> ports;
+    private int depth = 0;
     private int x;
     private int y;
     private int height;
     private int width;
-    private String name = "";
-    private boolean isSelected;
+    private boolean isSelected = false;
     private boolean isHover = false;
-    protected Color color = Color.WHITE;
+    private String label = "";
+    private Color color = Color.WHITE;
     private final int MIN_WIDTH = 50;
     private final int MIN_HEIGHT = 40;
 
+    public void setDepth(int d){
+          this.depth = d;
+     }
+
+     public int getDepth(){
+          return this.depth;
+     }
+    
     public void setX(int x){
         this.x = x;
     }
@@ -48,14 +57,6 @@ public abstract class BasicAbstract extends ShapeAbstract{
         return this.width;
     }
 
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
     public void setIsSelected(boolean selected){
         this.isSelected = selected;
     }
@@ -70,6 +71,14 @@ public abstract class BasicAbstract extends ShapeAbstract{
 
     public boolean getIsHovered(){
         return this.isHover;
+    }
+
+    public void setLabel(String label){
+        this.label = label;
+    }
+
+    public String getLabel(){
+        return this.label;
     }
 
     public void setColor(Color color){
@@ -93,12 +102,12 @@ public abstract class BasicAbstract extends ShapeAbstract{
         g.setColor(Color.BLACK);
         FontMetrics fm = g.getFontMetrics();
 
-        int textX = getX() + (getWidth() - fm.stringWidth(getName())) / 2;
+        int textX = getX() + (getWidth() - fm.stringWidth(getLabel())) / 2;
         int textY = getY() + (getHeight() + fm.getAscent()) / 2 - 2; 
-        g.drawString(getName(), textX, textY);
+        g.drawString(getLabel(), textX, textY);
     }
 
-    protected void drawPorts(java.awt.Graphics g) {
+    protected void drawPorts(Graphics g) {
         if ((getIsSelected() || getIsHovered()) && ports != null) {
             for (Port p : ports) {
                 p.draw(g);

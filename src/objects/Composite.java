@@ -1,16 +1,19 @@
 package objects;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Composite extends BasicAbstract{
-    private ArrayList<BasicAbstract> members = new ArrayList<>();
+    private ArrayList<BasicAbstract> members;
+    private final Color DASH_COLOR = Color.GRAY;
+    private final float DASH_WIDTH = 1.0f;
+    private final float DASH_LEN = 10.0f;
+    private final int BLANK = 5;
 
+    public Composite(){
+        members = new ArrayList<>();
+    }
+    
     public void addMember(BasicAbstract shape) {
         members.add(shape);
     }
@@ -58,6 +61,14 @@ public class Composite extends BasicAbstract{
     }
 
     @Override
+    public boolean isInside(Point p) {
+        for (BasicAbstract s : members) {
+            if (s.isInside(p)) return true;
+        }
+        return false;
+    }
+
+    @Override
     public void draw(Graphics g) {
         for (BasicAbstract s : members) {
             s.draw(g);
@@ -70,16 +81,16 @@ public class Composite extends BasicAbstract{
     private void drawBoundingBox(Graphics g){
         Graphics2D g2d = (Graphics2D) g.create();
         Rectangle bound = getBoundary();
-        float[] dash = {5.0f};
-        g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
-        g2d.setColor(Color.GRAY);
-        g2d.drawRect(bound.x - 5, bound.y - 5, bound.width + 10, bound.height + 10);
+        float[] dash = {DASH_LEN};
+        g2d.setStroke(new BasicStroke(DASH_WIDTH, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
+        g2d.setColor(DASH_COLOR);
+        g2d.drawRect(bound.x - BLANK, bound.y - BLANK, bound.width + 2 * BLANK, bound.height + 2 * BLANK);
         g2d.dispose();
     }
 
     private Rectangle getBoundary() {
         if(members.isEmpty()) {
-            return new Rectangle();
+            return null;
         }
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
@@ -92,12 +103,4 @@ public class Composite extends BasicAbstract{
         }
         return new Rectangle(minX, minY, maxX - minX, maxY - minY);
     }
-
-    @Override
-    public boolean isInside(Point p) {
-        for (BasicAbstract s : members) {
-            if (s.isInside(p)) return true;
-        }
-        return false;
-    }  
 }

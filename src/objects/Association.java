@@ -7,7 +7,7 @@ import java.awt.Point;
 public class Association extends LinkAbstract{
     
     public Association(Port start, Port end) {
-        super.createLink(start, end);
+        super.constructLink(start, end);
     }
 
     @Override

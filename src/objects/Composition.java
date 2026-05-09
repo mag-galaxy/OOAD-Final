@@ -5,7 +5,7 @@ import java.awt.*;
 public class Composition extends LinkAbstract {
 
     public Composition(Port start, Port end) {
-        super.createLink(start, end);
+        super.constructLink(start, end);
     }
 
     @Override

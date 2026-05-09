@@ -5,7 +5,7 @@ import java.awt.*;
 public class Generalization extends LinkAbstract {
 
     public Generalization(Port start, Port end) {
-        super.createLink(start, end);
+        super.constructLink(start, end);
     }
 
     @Override

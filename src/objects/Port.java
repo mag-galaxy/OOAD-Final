@@ -1,12 +1,8 @@
 package objects;
 
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Point;
-import java.util.ArrayList;
+import java.awt.*;
 
 public class Port extends ShapeAbstract{
-    
     private BasicAbstract owner;
     private double ratioX;
     private double ratioY;
@@ -14,12 +10,7 @@ public class Port extends ShapeAbstract{
     private final int CLICK_RANGE = 12;
     private final Color PORT_COLOR = Color.BLACK;
 
-    private ArrayList<LinkAbstract> startLinks;
-    private ArrayList<LinkAbstract> endLinks;
-
     public Port(BasicAbstract owner, double rx, double ry) {
-        this.startLinks = new ArrayList<>();
-        this.endLinks = new ArrayList<>();
         this.owner = owner;
         this.ratioX = rx;
         this.ratioY = ry;
@@ -35,14 +26,6 @@ public class Port extends ShapeAbstract{
 
     public double getRatioY(){
         return this.ratioY;
-    }
-
-    public void addStartLink(LinkAbstract link) { 
-        startLinks.add(link);
-    }
-
-    public void addEndLink(LinkAbstract link) {
-        endLinks.add(link);
     }
 
     public Point getAbsolutePosition() {
