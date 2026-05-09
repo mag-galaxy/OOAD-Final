@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 import gui.Canvas;
 import objects.BasicAbstract;
-import objects.ShapeAbstract;
 
 public class MenuLabel extends MenuItemAbstract{
     public MenuLabel(Canvas canvas) {
@@ -16,21 +15,16 @@ public class MenuLabel extends MenuItemAbstract{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ShapeAbstract selected = canvas.getSelectedObject();
-        
-        if (selected instanceof BasicAbstract) {
-            showSettingDialog((BasicAbstract) selected);
-        }
-        else {
-            JOptionPane.showMessageDialog(canvas, "Please select a single basic object.");
-        }
+        BasicAbstract selected = canvas.getSelectedObject();
+        showSettingDialog(selected);
+
     }
 
     private void showSettingDialog(BasicAbstract target) {
-        String newName = JOptionPane.showInputDialog(canvas, "Enter Name:", target.getName());
+        String newName = JOptionPane.showInputDialog(canvas, "Enter Name:", target.getLabel());
         
         if (newName != null) {
-            target.setName(newName);
+            target.setLabel(newName);
             
             Color newColor = JColorChooser.showDialog(canvas, "Choose Color", target.getColor());
             if (newColor != null) {
