@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import gui.Canvas;
 import gui.ToolBar;
-import objCreate.CompositionCreate;
+import objects.Composition;
 
 public class CompositionLinkButton extends ButtonAbstract implements ActionListener {
     private static final String LABEL = "composition";
@@ -19,6 +19,6 @@ public class CompositionLinkButton extends ButtonAbstract implements ActionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         toolBar.setActiveBtn(this);
-        canvas.setLinkDraw(new CompositionCreate());
+        canvas.setLinkDraw((p1, p2) -> new Composition(p1, p2));
     }
 }

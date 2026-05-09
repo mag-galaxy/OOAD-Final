@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import gui.Canvas;
 import gui.ToolBar;
-import objCreate.AssociationCreate;
+import objects.Association;
 
 public class AssociationLinkButton extends ButtonAbstract implements ActionListener{
     private static final String LABEL = "association";
@@ -19,6 +19,6 @@ public class AssociationLinkButton extends ButtonAbstract implements ActionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         toolBar.setActiveBtn(this);
-        canvas.setLinkDraw(new AssociationCreate());
+        canvas.setLinkDraw((p1, p2) -> new Association(p1, p2));
     }
 }

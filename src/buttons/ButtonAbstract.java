@@ -14,23 +14,25 @@ public abstract class ButtonAbstract extends JButton{
     private final int ICON_HEIGHT =40;
     private final String ICON_PATH = "/icons/";
     private final String ICON_TYPE = ".png";
+    private final Color DEFAULT_BG = Color.WHITE;
+    private final Color DEFAULT_FG = Color.BLACK;
 
     public ButtonAbstract(String label, Canvas canvas, ToolBar toolBar) {
         super(label);
         this.canvas = canvas;
         this.toolBar = toolBar;
-        this.setBackground(Color.WHITE);
+        this.setBackground(DEFAULT_BG);
         this.setFocusPainted(false);
     }
 
     public void setSelectedStyle() {
-        this.setBackground(Color.BLACK);
-        this.setForeground(Color.WHITE);
+        this.setBackground(DEFAULT_FG);
+        this.setForeground(DEFAULT_BG);
     }
 
     public void setUnselectedStyle() {
-        this.setBackground(Color.WHITE);
-        this.setForeground(Color.BLACK);
+        this.setBackground(DEFAULT_BG);
+        this.setForeground(DEFAULT_FG);
     }
     
     public void setIcon(String iconName){

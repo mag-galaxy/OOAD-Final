@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 
 import gui.Canvas;
 import gui.ToolBar;
-import objCreate.RectCreate;
+import objects.Rect;
 
 public class RectButton extends ButtonAbstract implements MouseListener{
     private static final String LABEL = "rect";
@@ -33,7 +33,7 @@ public class RectButton extends ButtonAbstract implements MouseListener{
         Point dropPoint = e.getPoint();
         Point pOnCanvas = SwingUtilities.convertPoint(this, dropPoint, canvas);
         if (canvas.contains(pOnCanvas)) {
-            canvas.addShape(new RectCreate(), pOnCanvas.x, pOnCanvas.y);
+            canvas.addShape((x, y, depth) -> new Rect(x, y, depth), pOnCanvas.x, pOnCanvas.y);
         }
         toolBar.resetButtonColor();
         toolBar.activeModeButton.setSelectedStyle();

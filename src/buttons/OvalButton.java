@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 
 import gui.Canvas;
 import gui.ToolBar;
-import objCreate.OvalCreate;
+import objects.Oval;
 
 public class OvalButton extends ButtonAbstract implements MouseListener{
     private static final String LABEL = "oval";
@@ -33,7 +33,7 @@ public class OvalButton extends ButtonAbstract implements MouseListener{
         Point dropPoint = e.getPoint();
         Point pOnCanvas = SwingUtilities.convertPoint(this, dropPoint, canvas);
         if (canvas.contains(pOnCanvas)){
-            canvas.addShape(new OvalCreate(), pOnCanvas.x, pOnCanvas.y);
+            canvas.addShape((x, y, depth) -> new Oval(x, y, depth), pOnCanvas.x, pOnCanvas.y);
         }
         toolBar.resetButtonColor();
         toolBar.activeModeButton.setSelectedStyle();

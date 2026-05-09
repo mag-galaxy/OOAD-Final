@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import gui.Canvas;
 import gui.ToolBar;
-import objCreate.GeneralizationCreate;
+import objects.Generalization;
 
 public class GeneralizationLinkButton extends ButtonAbstract implements ActionListener {
     private static final String LABEL = "generalization";
@@ -19,6 +19,6 @@ public class GeneralizationLinkButton extends ButtonAbstract implements ActionLi
     @Override
     public void actionPerformed(ActionEvent e) {
         toolBar.setActiveBtn(this);
-        canvas.setLinkDraw(new GeneralizationCreate());
+        canvas.setLinkDraw((p1, p2) -> new Generalization(p1, p2));
     }
 }
