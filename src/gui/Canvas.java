@@ -16,26 +16,25 @@ import objects.Composite;
 import objCreate.BasicCreateInterface;
 import objCreate.LinkCreateInterface;
 
+import mouseState.IdleState;
+import mouseState.MouseStateInterface;
+
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener{
     
-    public ArrayList<BasicAbstract> objList;
-    public ArrayList<LinkAbstract> lineList;
+    private ArrayList<BasicAbstract> objList;
+    private ArrayList<LinkAbstract> lineList;
+    private ArrayList<BasicAbstract> selectedObjs;
 
     private LinkCreateInterface drawLink = null;
     private int currentDepth = 0;
-    private Port startPort = null;
-    private Port resizePort = null;
-    private Point selectStart;
-    private Point lastMousePoint;
-    private BasicAbstract draggedObj = null;
     private BasicAbstract hoveredObj = null;
     private Rectangle selectRect;
-    private Rectangle originalBound;
+
+    private MouseStateInterface mouseState;
 
     private final Color SELECT_BOUND = new Color(0, 120, 215);
     private final Color SELECT_COLOR = new Color(0, 120, 215, 50);
 
-    // constructor
     public Canvas() {
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -45,134 +44,67 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private void initializeList(){
         objList = new ArrayList<>();
         lineList = new ArrayList<>();
+        selectedObjs = new ArrayList<>();
+        mouseState = new IdleState();
+    }
+
+    public void setMouseState(MouseStateInterface state){
+        this.mouseState = state;
+    }
+
+    public void setLinkDraw(LinkCreateInterface strategy) {
+        this.drawLink = strategy;
+    }
+
+    public LinkCreateInterface getLinkDraw(){
+        return drawLink;
+    }
+
+    public ArrayList<BasicAbstract> getObjs(){
+        return objList;
+    }
+    
+    public ArrayList<BasicAbstract> getSelectedObjs(){
+        return selectedObjs;
+    }
+
+    public void setSelectRect(Rectangle newRect){
+        this.selectRect = newRect;
+        repaint();
+    }
+
+    public void addLink(LinkAbstract newLink){
+        lineList.add(newLink);
+        repaint();
+    }
+
+    public void addShape(BasicCreateInterface strategy, int dropX, int dropY){
+        BasicAbstract newObj = strategy.createBasic(dropX, dropY, currentDepth++);
+        objList.add(newObj);
+        repaint();
     }
 
     // mouse action
     @Override
-    public void mousePressed(MouseEvent e){
-        Point p = e.getPoint();
-
-        if (drawLink != null) {
-            startPort = findPortAt(p);
-        }
-
-        else {
-            selectObjectAt(p);
-            BasicAbstract selected = getSelectedObject();
-
-            if(selected == null){
-                selectStart = p;
-                selectRect = new Rectangle(p);
-            }
-            else if(findPortAt(p) == null){
-                draggedObj = selected;
-                lastMousePoint = p;
-            }
-            else{
-                resizePort = findPortAt(p);
-                BasicAbstract target = resizePort.getOwner();
-                originalBound = new Rectangle(target.getX(), target.getY(), target.getWidth(), target.getHeight());
-            }
-        }
+    public void mousePressed(MouseEvent e) {
+        mouseState.onPressed(e, this);
         repaint();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (draggedObj != null && lastMousePoint != null) {
-            int dx = e.getX() - lastMousePoint.x;
-            int dy = e.getY() - lastMousePoint.y;
+        mouseState.onDragged(e, this);
+        repaint();
+    }
 
-            // update coordinate of object
-            draggedObj.setX(draggedObj.getX() + dx);
-            draggedObj.setY(draggedObj.getY() + dy);
-
-            lastMousePoint = e.getPoint();
-        }
-
-        else if (selectStart != null) {
-            int x = Math.min(e.getX(), selectStart.x);
-            int y = Math.min(e.getY(), selectStart.y);
-            int width = Math.abs(e.getX() - selectStart.x);
-            int height = Math.abs(e.getY() - selectStart.y);
-            
-            selectRect = new Rectangle(x, y, width, height);
-        }
-
-        else if (resizePort != null) {
-            BasicAbstract target = resizePort.getOwner();
-            Point p = e.getPoint();
-            
-            int x1 = originalBound.x;
-            int y1 = originalBound.y;
-            int x2 = x1 + originalBound.width;
-            int y2 = y1 + originalBound.height;
-
-            if (resizePort.getRatioX() == 0) x1 = p.x;
-            else if (resizePort.getRatioX() == 1) x2 = p.x;
-
-            if (resizePort.getRatioY() == 0) y1 = p.y;
-            else if (resizePort.getRatioY() == 1) y2 = p.y;
-
-            int newX = Math.min(x1, x2);
-            int newY = Math.min(y1, y2);
-            int newW = Math.abs(x2 - x1);
-            int newH = Math.abs(y2 - y1);
-
-            target.setX(newX);
-            target.setY(newY);
-            target.setWidth(newW);
-            target.setHeight(newH);
-        }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        mouseState.onReleased(e, this);
         repaint();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        // create link
-        if (drawLink != null && startPort != null) {
-            // find if mouse released at a port
-            Port endPort = findPortAt(e.getPoint());
-
-            // check if it is a valid link
-            if (endPort != null && endPort != startPort) {
-                if (startPort.getOwner() != endPort.getOwner()) {
-                    
-                    // call interface to create link object
-                    LinkAbstract newLink = drawLink.createLink(startPort, endPort);
-
-                    lineList.add(newLink);
-                    System.out.println("Connection Created!");
-                }
-            }
-            startPort = null;
-        }
-
-        else if (draggedObj != null) {
-            draggedObj = null;
-            lastMousePoint = null;
-        }
-
-        else if (selectRect != null){
-            for (BasicAbstract s : objList) {
-                Rectangle objRect = new Rectangle(s.getX(), s.getY(), s.getWidth(), s.getHeight());
-                if (selectRect.contains(objRect)) {
-                    s.setIsSelected(true);
-                }
-            }
-            selectRect = null;
-            selectStart = null;
-        }
-
-        else if (resizePort != null){
-            resizePort = null;
-            originalBound = null;
-        }
-        repaint();
-    }
 
     @Override
     public void mouseMoved(MouseEvent e){
@@ -217,28 +149,16 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         }
         if (selectRect != null) {
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(SELECT_BOUND);
-            g2d.fill(selectRect);
             g2d.setColor(SELECT_COLOR);
+            g2d.fill(selectRect);
+            g2d.setColor(SELECT_BOUND);
             g2d.draw(selectRect);
         }
     }
 
-    public void setLinkDraw(LinkCreateInterface strategy) {
-        this.drawLink = strategy;
-    }
-
-    public void addShape(BasicCreateInterface strategy, int dropX, int dropY){
-        BasicAbstract newObj = strategy.createBasic(dropX, dropY, currentDepth++);
-        objList.add(newObj);
-        repaint();
-    }
-
-    private Port findPortAt(Point p) {
-        // start from the last added object
+    public Port findPortAt(Point p) {
         for (int i = objList.size() - 1; i >= 0; i--) {
             BasicAbstract s = objList.get(i);
-            // check if mouse is in a port
             if(s.getPorts() == null){
                 continue;
             }
@@ -251,19 +171,28 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         return null;
     }
 
-    private void selectObjectAt(Point p) {
-        // reset everyone to unselected
+    public BasicAbstract findObjAt(Point p){
+        for (int i = objList.size() - 1; i >= 0; i--){
+            BasicAbstract s = objList.get(i);
+            if(s.isInside(p)){
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public void resetObjs(){
         for (BasicAbstract s : objList) {
             s.setIsSelected(false);
         }
+    }
 
-        // find curser posision
+    public void selectObjectAt(Point p) {
+        resetObjs();
         for (int i = objList.size() - 1; i >= 0; i--) {
             BasicAbstract s = objList.get(i);          
             if (s.isInside(p)) {
                 s.setIsSelected(true);
-
-                // add to top of list
                 objList.remove(i);
                 objList.add(s);
                 break; 
@@ -293,7 +222,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             }
             group.setIsSelected(true);
             objList.add(group);
-            System.out.println("Objects Grouped");
         }
         else {
             objList.addAll(selectedItems);
@@ -302,10 +230,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void ungroupObjects() {
-        // find group object
         for (int i = objList.size() - 1; i >= 0; i--) {
             BasicAbstract s = objList.get(i);
-            if (s.getIsSelected() && s instanceof Composite) {
+            if (s.getIsSelected() && s.getPorts() == null) {
                 Composite group = (Composite) s;
                 objList.remove(i);
                 for (BasicAbstract member : group.getMembers()) {
@@ -318,15 +245,12 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         repaint();
     }
 
-    public BasicAbstract getSelectedObject() {
-        BasicAbstract selected = null;
-        int count = 0;
+    public void updateSelectedObject() {
+        selectedObjs.clear();
         for (BasicAbstract s : objList) {
             if (s.getIsSelected()) {
-                selected = s;
-                count++;
+                selectedObjs.add(s);
             }
         }
-        return (count == 1) ? selected : null;
     }
 }

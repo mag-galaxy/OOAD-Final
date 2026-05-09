@@ -2,6 +2,8 @@ package menu;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
@@ -15,9 +17,10 @@ public class MenuLabel extends MenuItemAbstract{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BasicAbstract selected = canvas.getSelectedObject();
-        showSettingDialog(selected);
-
+        ArrayList<BasicAbstract> selectedObjs = canvas.getSelectedObjs();
+        if(selectedObjs.size() == 1){
+            showSettingDialog(selectedObjs.get(0));
+        }
     }
 
     private void showSettingDialog(BasicAbstract target) {

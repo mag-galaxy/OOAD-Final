@@ -11,6 +11,7 @@ public class Composite extends BasicAbstract{
     private final int BLANK = 5;
 
     public Composite(){
+        ports = null;
         members = new ArrayList<>();
     }
     
