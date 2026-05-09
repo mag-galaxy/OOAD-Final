@@ -36,4 +36,7 @@ public class DrawLinkState implements MouseStateInterface {
     private boolean isValidEndPort(Port end, Port start) {
         return (end != null && end.getOwner() != start.getOwner());
     }
+
+    @Override
+    public void onHovered(MouseEvent e, Canvas canvas) {}
 }

@@ -37,4 +37,7 @@ public class DragState implements MouseStateInterface {
         lastMousePoint = null;
         canvas.setMouseState(new IdleState());
     }
+
+    @Override
+    public void onHovered(MouseEvent e, Canvas canvas) {}
 }

@@ -46,4 +46,7 @@ public class SelectionState implements MouseStateInterface {
         canvas.setSelectRect(selectRect);
         canvas.setMouseState(new IdleState());
     }
+
+    @Override
+    public void onHovered(MouseEvent e, Canvas canvas) {}
 }

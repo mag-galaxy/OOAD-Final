@@ -54,4 +54,7 @@ public class ResizeState implements MouseStateInterface {
         target = null;
         canvas.setMouseState(new IdleState());
     }
+
+    @Override
+    public void onHovered(MouseEvent e, Canvas canvas) {}
 }

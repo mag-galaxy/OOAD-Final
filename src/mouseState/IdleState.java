@@ -11,9 +11,11 @@ import objects.BasicAbstract;
 import objects.Port;
 
 public class IdleState implements MouseStateInterface {
+    ArrayList<BasicAbstract> allObjs;
     ArrayList<BasicAbstract> selectedObjs;
 
     public IdleState(){
+        allObjs = new ArrayList<>();
         selectedObjs = new ArrayList<>();
     }
 
@@ -31,11 +33,6 @@ public class IdleState implements MouseStateInterface {
                 System.out.println("draw link mode");
             }
         }
-        else if(port != null){
-            canvas.resetObjs();
-            canvas.setMouseState(new ResizeState(port));
-            System.out.println("resize mode");
-        }
         else if(object != null && selectedObjs.contains(object)){ // select one of old objs
             canvas.setMouseState(new DragState(selectedObjs, point));
             System.out.println("dragging mode");
@@ -46,6 +43,11 @@ public class IdleState implements MouseStateInterface {
             selectedObjs = canvas.getSelectedObjs();
             canvas.setMouseState(new DragState(selectedObjs, point));
             System.out.println("dragging mode");
+        }
+        else if(port != null){
+            canvas.resetObjs();
+            canvas.setMouseState(new ResizeState(port));
+            System.out.println("resize mode");
         }
         else{
             canvas.resetObjs();
@@ -59,4 +61,20 @@ public class IdleState implements MouseStateInterface {
 
     @Override
     public void onReleased(MouseEvent e, Canvas canvas) {}
+
+    @Override
+    public void onHovered(MouseEvent e, Canvas canvas) {
+        allObjs = canvas.getObjs();
+        BasicAbstract newlyHovered = canvas.findObjAt(e.getPoint());
+        BasicAbstract hoveredObj = canvas.getHoveredObj();
+        if (hoveredObj != newlyHovered) {
+            if (hoveredObj != null) {
+                hoveredObj.setIsHovered(false);
+            }
+            if (newlyHovered != null) {
+                newlyHovered.setIsHovered(true);
+            }
+            canvas.setHoveredObj(newlyHovered);
+        }
+    }
 }
