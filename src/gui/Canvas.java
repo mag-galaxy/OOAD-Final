@@ -27,17 +27,24 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private Port resizePort = null;
     private Point selectStart;
     private Point lastMousePoint;
-    private BasicAbstract draggingObj;
-    private BasicAbstract hoveredObj;
+    private BasicAbstract draggedObj = null;
+    private BasicAbstract hoveredObj = null;
     private Rectangle selectRect;
     private Rectangle originalBound;
 
+    private final Color SELECT_BOUND = new Color(0, 120, 215);
+    private final Color SELECT_COLOR = new Color(0, 120, 215, 50);
+
     // constructor
     public Canvas() {
-        objList = new ArrayList<>();
-        lineList = new ArrayList<>();
         addMouseListener(this);
         addMouseMotionListener(this);
+        initializeList();
+    }
+
+    private void initializeList(){
+        objList = new ArrayList<>();
+        lineList = new ArrayList<>();
     }
 
     // mouse action
@@ -58,7 +65,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
                 selectRect = new Rectangle(p);
             }
             else if(findPortAt(p) == null){
-                draggingObj = selected;
+                draggedObj = selected;
                 lastMousePoint = p;
             }
             else{
@@ -72,13 +79,13 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (draggingObj != null && lastMousePoint != null) {
+        if (draggedObj != null && lastMousePoint != null) {
             int dx = e.getX() - lastMousePoint.x;
             int dy = e.getY() - lastMousePoint.y;
 
             // update coordinate of object
-            draggingObj.setX(draggingObj.getX() + dx);
-            draggingObj.setY(draggingObj.getY() + dy);
+            draggedObj.setX(draggedObj.getX() + dx);
+            draggedObj.setY(draggedObj.getY() + dy);
 
             lastMousePoint = e.getPoint();
         }
@@ -121,9 +128,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     @Override
-    public void mouseEntered(MouseEvent e){
-        //
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -146,8 +151,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             startPort = null;
         }
 
-        else if (draggingObj != null) {
-            draggingObj = null;
+        else if (draggedObj != null) {
+            draggedObj = null;
             lastMousePoint = null;
         }
 
@@ -196,20 +201,31 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        //
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-        //
+    public void mouseExited(MouseEvent e) {}
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (BasicAbstract s : objList) {
+            s.draw(g);
+        }
+        for (LinkAbstract l: lineList) {
+            l.draw(g);
+        }
+        if (selectRect != null) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(SELECT_BOUND);
+            g2d.fill(selectRect);
+            g2d.setColor(SELECT_COLOR);
+            g2d.draw(selectRect);
+        }
     }
 
     public void setLinkDraw(LinkCreateInterface strategy) {
         this.drawLink = strategy;
-        if(strategy != null) {
-            System.out.println("Mode Switched: Link Connection");
-        }
     }
 
     public void addShape(BasicCreateInterface strategy, int dropX, int dropY){
@@ -254,24 +270,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             }
         }
         repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (BasicAbstract s : objList) {
-            s.draw(g);
-        }
-        for (LinkAbstract l: lineList) {
-            l.draw(g);
-        }
-        if (selectRect != null) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(new Color(0, 120, 215, 50));
-            g2d.fill(selectRect);
-            g2d.setColor(new Color(0, 120, 215));
-            g2d.draw(selectRect);
-        }
     }
 
     public void groupObjects() {
