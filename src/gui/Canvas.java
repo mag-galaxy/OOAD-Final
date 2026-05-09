@@ -1,31 +1,27 @@
 package gui;
 
-import objects.Port;
-import objects.LinkAbstract;
-import objects.BasicAbstract;
-import objects.Composite;
-import draw.BasicDrawInterface;
-import draw.LinkDrawInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import objects.Port;
+import objects.LinkAbstract;
+import objects.BasicAbstract;
+import objects.Composite;
+import objCreate.BasicCreateInterface;
+import objCreate.LinkCreateInterface;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener{
     
     public ArrayList<BasicAbstract> objList;
     public ArrayList<LinkAbstract> lineList;
 
-    private LinkDrawInterface drawLink = null;
+    private LinkCreateInterface drawLink = null;
     private int currentDepth = 0;
     private Port startPort = null;
     private Port resizePort = null;
@@ -209,14 +205,14 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         //
     }
 
-    public void setLinkDraw(LinkDrawInterface strategy) {
+    public void setLinkDraw(LinkCreateInterface strategy) {
         this.drawLink = strategy;
         if(strategy != null) {
             System.out.println("Mode Switched: Link Connection");
         }
     }
 
-    public void addShape(BasicDrawInterface strategy, int dropX, int dropY){
+    public void addShape(BasicCreateInterface strategy, int dropX, int dropY){
         BasicAbstract newObj = strategy.createBasic(dropX, dropY, currentDepth++);
         objList.add(newObj);
         repaint();

@@ -1,19 +1,21 @@
 package buttons;
 
+import javax.swing.SwingUtilities;
+
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.SwingUtilities;
-
-import draw.OvalCreate;
 import gui.Canvas;
 import gui.ToolBar;
+import objCreate.OvalCreate;
 
 public class OvalButton extends ButtonAbstract implements MouseListener{
+    private static final String LABEL = "oval";
+    
     public OvalButton(Canvas canvas, ToolBar toolBar) {
-        super("oval", canvas, toolBar);
-        setIcon("oval");
+        super(LABEL, canvas, toolBar);
+        setIcon(LABEL);
         this.addMouseListener(this);
     }
 

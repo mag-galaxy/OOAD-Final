@@ -3,14 +3,16 @@ package buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import draw.GeneralizationCreate;
 import gui.Canvas;
 import gui.ToolBar;
+import objCreate.GeneralizationCreate;
 
 public class GeneralizationLinkButton extends ButtonAbstract implements ActionListener {
+    private static final String LABEL = "generalization";
+    
     public GeneralizationLinkButton(Canvas canvas, ToolBar toolBar){
-        super("generalization", canvas, toolBar);
-        setIcon("generalization");
+        super(LABEL, canvas, toolBar);
+        setIcon(LABEL);
         this.addActionListener(this);
     }
 

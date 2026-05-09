@@ -1,17 +1,19 @@
 package buttons;
 
-import javax.swing.*;
-import java.awt.Color;
-import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import java.awt.*;
+
 import gui.Canvas;
 import gui.ToolBar;
 
 public abstract class ButtonAbstract extends JButton{
-    
     protected Canvas canvas;
     protected ToolBar toolBar;
     private final int ICON_WIDTH = 40;
     private final int ICON_HEIGHT =40;
+    private final String ICON_PATH = "/icons/";
+    private final String ICON_TYPE = ".png";
 
     public ButtonAbstract(String label, Canvas canvas, ToolBar toolBar) {
         super(label);
@@ -33,7 +35,7 @@ public abstract class ButtonAbstract extends JButton{
     
     public void setIcon(String iconName){
         try {
-            String path = "/icons/" + iconName + ".png";
+            String path = ICON_PATH + iconName + ICON_TYPE;
             java.net.URL imgURL = getClass().getResource(path);
             
             if (imgURL != null) {
@@ -45,7 +47,7 @@ public abstract class ButtonAbstract extends JButton{
             }
         } 
         catch (Exception e) {
-            System.err.println("找不到圖示: " + iconName);
+            System.err.println("icon not found: " + iconName);
         }
     }
 }

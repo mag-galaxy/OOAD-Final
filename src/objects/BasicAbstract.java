@@ -1,9 +1,6 @@
 package objects;
 
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.FontMetrics;
+import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class BasicAbstract extends ShapeAbstract{

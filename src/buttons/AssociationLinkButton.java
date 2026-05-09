@@ -3,14 +3,16 @@ package buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import draw.AssociationCreate;
 import gui.Canvas;
 import gui.ToolBar;
+import objCreate.AssociationCreate;
 
 public class AssociationLinkButton extends ButtonAbstract implements ActionListener{
+    private static final String LABEL = "association";
+    
     public AssociationLinkButton(Canvas canvas, ToolBar toolBar) {
-        super("association", canvas, toolBar);
-        setIcon("association");
+        super(LABEL, canvas, toolBar);
+        setIcon(LABEL);
         this.addActionListener(this);
     }
     

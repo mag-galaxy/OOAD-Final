@@ -6,14 +6,16 @@ import java.awt.event.MouseListener;
 
 import javax.swing.SwingUtilities;
 
-import draw.RectCreate;
 import gui.Canvas;
 import gui.ToolBar;
+import objCreate.RectCreate;
 
 public class RectButton extends ButtonAbstract implements MouseListener{
+    private static final String LABEL = "rect";
+
     public RectButton(Canvas canvas, ToolBar toolBar) {
-        super("rect", canvas, toolBar);
-        setIcon("rect");
+        super(LABEL, canvas, toolBar);
+        setIcon(LABEL);
         this.addMouseListener(this);
     }
 

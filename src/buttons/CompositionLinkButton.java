@@ -3,14 +3,16 @@ package buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import draw.CompositionCreate;
 import gui.Canvas;
 import gui.ToolBar;
+import objCreate.CompositionCreate;
 
 public class CompositionLinkButton extends ButtonAbstract implements ActionListener {
+    private static final String LABEL = "composition";
+    
     public CompositionLinkButton(Canvas canvas, ToolBar toolBar) {
-        super("composition", canvas, toolBar);
-        setIcon("composition");
+        super(LABEL, canvas, toolBar);
+        setIcon(LABEL);
         this.addActionListener(this);
     }
 
