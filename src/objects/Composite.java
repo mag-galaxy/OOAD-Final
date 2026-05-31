@@ -19,6 +19,7 @@ public class Composite extends BasicAbstract{
         members.add(shape);
     }
 
+    @Override
     public ArrayList<BasicAbstract> getMembers() {
         return members;
     }

@@ -23,18 +23,18 @@ public class ResizeState implements MouseStateInterface {
 
     @Override
     public void onDragged(MouseEvent e, Canvas canvas) {
-        Point p = e.getPoint();
+        Point point = e.getPoint();
         
         int x1 = originalBound.x;
         int y1 = originalBound.y;
         int x2 = x1 + originalBound.width;
         int y2 = y1 + originalBound.height;
 
-        if (resizePort.getRatioX() == 0) x1 = p.x;
-        else if (resizePort.getRatioX() == 1) x2 = p.x;
+        if (resizePort.getRatioX() == 0) x1 = point.x;
+        else if (resizePort.getRatioX() == 1) x2 = point.x;
 
-        if (resizePort.getRatioY() == 0) y1 = p.y;
-        else if (resizePort.getRatioY() == 1) y2 = p.y;
+        if (resizePort.getRatioY() == 0) y1 = point.y;
+        else if (resizePort.getRatioY() == 1) y2 = point.y;
 
         int newX = Math.min(x1, x2);
         int newY = Math.min(y1, y2);
@@ -52,9 +52,5 @@ public class ResizeState implements MouseStateInterface {
         resizePort = null;
         originalBound = null;
         target = null;
-        canvas.setMouseState(new IdleState());
     }
-
-    @Override
-    public void onHovered(MouseEvent e, Canvas canvas) {}
 }

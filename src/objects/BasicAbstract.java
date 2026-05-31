@@ -114,4 +114,8 @@ public abstract class BasicAbstract extends ShapeAbstract{
             }
         }
     }
+
+    public  ArrayList<BasicAbstract> getMembers(){
+        return null;
+    }
 }

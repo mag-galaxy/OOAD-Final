@@ -15,8 +15,7 @@ import objects.BasicAbstract;
 import objects.Composite;
 import objCreate.*;
 
-import mouseState.IdleState;
-import mouseState.MouseStateInterface;
+import mode.ModeInterface;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener{
     
@@ -24,12 +23,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private ArrayList<LinkAbstract> lineList;
     private ArrayList<BasicAbstract> selectedObjs;
 
-    private LinkCreateInterface drawLink = null;
     private int currentDepth = 0;
     private BasicAbstract hoveredObj = null;
     private Rectangle selectRect;
 
-    private MouseStateInterface mouseState;
+    private ModeInterface mode;
 
     private final Color SELECT_BOUND = new Color(0, 120, 215);
     private final Color SELECT_COLOR = new Color(0, 120, 215, 50);
@@ -44,19 +42,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         objList = new ArrayList<>();
         lineList = new ArrayList<>();
         selectedObjs = new ArrayList<>();
-        mouseState = new IdleState();
-    }
-
-    public void setMouseState(MouseStateInterface state){
-        this.mouseState = state;
-    }
-
-    public void setLinkDraw(LinkCreateInterface strategy) {
-        this.drawLink = strategy;
-    }
-
-    public LinkCreateInterface getLinkDraw(){
-        return drawLink;
     }
 
     public ArrayList<BasicAbstract> getObjs(){
@@ -80,6 +65,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         repaint();
     }
 
+    public void setMode(ModeInterface mode){
+        this.mode = mode;
+    }
+
     public void addLink(LinkAbstract newLink){
         lineList.add(newLink);
         repaint();
@@ -94,19 +83,19 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     // mouse action
     @Override
     public void mousePressed(MouseEvent e) {
-        mouseState.onPressed(e, this);
+        mode.onPressed(e, this);
         repaint();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mouseState.onDragged(e, this);
+        mode.onDragged(e, this);
         repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        mouseState.onReleased(e, this);
+        mode.onReleased(e, this);
         repaint();
     }
 
@@ -115,7 +104,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mouseMoved(MouseEvent e){
-        mouseState.onHovered(e, this);
+        mode.onHovered(e, this);
         repaint();
     }
 
@@ -226,13 +215,12 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void ungroupObjects() {
         for (int i = objList.size() - 1; i >= 0; i--) {
             BasicAbstract s = objList.get(i);
-            if (s.getIsSelected() && s.getPorts() == null) {
-                Composite group = (Composite) s;
-                objList.remove(i);
-                for (BasicAbstract member : group.getMembers()) {
+            if (s.getIsSelected()){
+                for (BasicAbstract member : s.getMembers()){
                     member.setIsSelected(true);
                     objList.add(member);
                 }
+                objList.remove(i);
                 break;
             }
         }

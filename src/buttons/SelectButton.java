@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import gui.Canvas;
 import gui.ToolBar;
+import mode.SelectMode;
 
 public class SelectButton extends ButtonAbstract implements ActionListener{
     public SelectButton(Canvas canvas, ToolBar toolBar) { 
@@ -16,6 +17,6 @@ public class SelectButton extends ButtonAbstract implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         toolBar.setActiveBtn(this);
-        canvas.setLinkDraw(null);
+        canvas.setMode(new SelectMode());
     }    
 }

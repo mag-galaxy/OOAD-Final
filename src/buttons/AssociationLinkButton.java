@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import gui.Canvas;
 import gui.ToolBar;
+import mode.DrawLinkMode;
 import objects.Association;
 
 public class AssociationLinkButton extends ButtonAbstract implements ActionListener{
@@ -19,6 +20,6 @@ public class AssociationLinkButton extends ButtonAbstract implements ActionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         toolBar.setActiveBtn(this);
-        canvas.setLinkDraw((p1, p2) -> new Association(p1, p2));
+        canvas.setMode(new DrawLinkMode((p1, p2) -> new Association(p1, p2)));
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import buttons.*;
+import mode.SelectMode;
 
 public class ToolBar extends JPanel{
     public ButtonAbstract activeModeButton;
@@ -36,6 +37,7 @@ public class ToolBar extends JPanel{
             this.add(btn);
         }
         setActiveBtn(allButtons.get(SELECT_INX));
+        canvas.setMode(new SelectMode());
     }
 
     public void resetButtonColor() {
