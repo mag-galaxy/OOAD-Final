@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
-import gui.Canvas;
 import objects.BasicAbstract;
 
 public class MenuLabel extends MenuItemAbstract{
-    public MenuLabel(Canvas canvas) {
-        super("Label", canvas);
+    public MenuLabel() {
+        super("Label");
     }
 
     @Override

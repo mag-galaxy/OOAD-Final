@@ -8,6 +8,9 @@ import buttons.*;
 import mode.SelectMode;
 
 public class ToolBar extends JPanel{
+
+    private static ToolBar instance;
+
     public ButtonAbstract activeModeButton;
     private List<ButtonAbstract> allButtons;
     private Canvas canvas;
@@ -17,21 +20,26 @@ public class ToolBar extends JPanel{
     private final Color BG_COLOR = Color.LIGHT_GRAY;
     private final int SELECT_INX = 0;
 
-    public ToolBar(Canvas canvas) {
-        this.canvas = canvas;
+    private ToolBar() {
+        this.canvas = Canvas.getInstance();
         this.setLayout(new GridLayout(ROWS, COLUMNS, GAP, GAP));
         this.setBackground(BG_COLOR);
         initializeButtons();
     }
 
+    public static ToolBar getInstance(){
+        if (instance == null) instance = new ToolBar();
+        return instance;
+    }
+
     private void initializeButtons() {
         allButtons = new ArrayList<>();
-        allButtons.add(new SelectButton(canvas, this));
-        allButtons.add(new AssociationLinkButton(canvas, this));
-        allButtons.add(new GeneralizationLinkButton(canvas, this));
-        allButtons.add(new CompositionLinkButton(canvas, this));
-        allButtons.add(new RectButton(canvas, this));
-        allButtons.add(new OvalButton(canvas, this));
+        allButtons.add(new SelectButton(this));
+        allButtons.add(new AssociationLinkButton(this));
+        allButtons.add(new GeneralizationLinkButton(this));
+        allButtons.add(new CompositionLinkButton(this));
+        allButtons.add(new RectButton(this));
+        allButtons.add(new OvalButton(this));
 
         for (ButtonAbstract btn : allButtons) {
             this.add(btn);

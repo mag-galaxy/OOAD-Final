@@ -6,15 +6,14 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import gui.Canvas;
 import gui.ToolBar;
 import objects.Oval;
 
 public class OvalButton extends ButtonAbstract implements MouseListener{
     private static final String LABEL = "oval";
     
-    public OvalButton(Canvas canvas, ToolBar toolBar) {
-        super(LABEL, canvas, toolBar);
+    public OvalButton(ToolBar toolBar) {
+        super(LABEL, toolBar);
         setIcon(LABEL);
         this.addMouseListener(this);
     }

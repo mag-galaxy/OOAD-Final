@@ -11,9 +11,9 @@ public abstract class MenuItemAbstract extends JMenuItem implements ActionListen
 
     protected Canvas canvas;
 
-    public MenuItemAbstract(String name, Canvas canvas) {
+    public MenuItemAbstract(String name) {
         super(name);
-        this.canvas = canvas;
+        this.canvas = Canvas.getInstance();
         this.addActionListener(this);
     }
     

@@ -1,10 +1,10 @@
 package objects;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BasicAbstract extends ShapeAbstract{
-    protected ArrayList<Port> ports;
+    protected List<Port> ports;
     private int depth = 0;
     private int x;
     private int y;
@@ -89,7 +89,7 @@ public abstract class BasicAbstract extends ShapeAbstract{
         return this.color;
     }
 
-    public ArrayList<Port> getPorts(){
+    public List<Port> getPorts(){
         return this.ports;
     }
 
@@ -115,7 +115,7 @@ public abstract class BasicAbstract extends ShapeAbstract{
         }
     }
 
-    public  ArrayList<BasicAbstract> getMembers(){
-        return null;
+    public List<BasicAbstract> getMembers(){
+         return List.of(this);
     }
 }

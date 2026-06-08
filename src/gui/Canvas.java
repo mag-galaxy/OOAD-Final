@@ -1,7 +1,6 @@
 package gui;
 
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JPanel;
 
 import java.awt.*;
@@ -19,6 +18,8 @@ import mode.ModeInterface;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener{
     
+    private static Canvas instance;
+
     private ArrayList<BasicAbstract> objList;
     private ArrayList<LinkAbstract> lineList;
     private ArrayList<BasicAbstract> selectedObjs;
@@ -32,10 +33,15 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private final Color SELECT_BOUND = new Color(0, 120, 215);
     private final Color SELECT_COLOR = new Color(0, 120, 215, 50);
 
-    public Canvas() {
+    private Canvas(){
         addMouseListener(this);
         addMouseMotionListener(this);
         initializeList();
+    }
+
+    public static Canvas getInstance() {
+        if (instance == null) instance = new Canvas();
+        return instance;
     }
 
     private void initializeList(){
@@ -169,7 +175,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             BasicAbstract s = objList.get(i);          
             if (s.isInside(p)) {
                 s.setIsSelected(true);
-                objList.remove(i);
+                objList.remove(s);
                 objList.add(s);
                 break; 
             }
@@ -187,42 +193,27 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void groupObjects() {
-        List<BasicAbstract> selectedItems = new ArrayList<>();
-
-        for (int i = objList.size() - 1; i >= 0; i--) {
-            BasicAbstract s = objList.get(i);
-            if (s.getIsSelected()) {
-                selectedItems.add(s);
-                objList.remove(i);
-            }
-        }
-
-        if (selectedItems.size() > 1) {
+        if (selectedObjs.size() > 1){
             Composite group = new Composite();
-            for (BasicAbstract s : selectedItems) {
+            for (BasicAbstract s : selectedObjs){
                 s.setIsSelected(false);
                 group.addMember(s);
             }
+            objList.removeAll(selectedObjs);
             group.setIsSelected(true);
             objList.add(group);
-        }
-        else {
-            objList.addAll(selectedItems);
         }
         repaint();
     }
 
     public void ungroupObjects() {
-        for (int i = objList.size() - 1; i >= 0; i--) {
-            BasicAbstract s = objList.get(i);
-            if (s.getIsSelected()){
-                for (BasicAbstract member : s.getMembers()){
-                    member.setIsSelected(true);
-                    objList.add(member);
-                }
-                objList.remove(i);
-                break;
+        if (selectedObjs.size() == 1) {
+            BasicAbstract s = selectedObjs.get(0);
+            for (BasicAbstract member : s.getMembers()){
+                member.setIsSelected(true);
+                objList.add(member);
             }
+            objList.remove(s);
         }
         repaint();
     }

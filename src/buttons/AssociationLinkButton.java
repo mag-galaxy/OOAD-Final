@@ -3,7 +3,6 @@ package buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import gui.Canvas;
 import gui.ToolBar;
 import mode.DrawLinkMode;
 import objects.Association;
@@ -11,8 +10,8 @@ import objects.Association;
 public class AssociationLinkButton extends ButtonAbstract implements ActionListener{
     private static final String LABEL = "association";
     
-    public AssociationLinkButton(Canvas canvas, ToolBar toolBar) {
-        super(LABEL, canvas, toolBar);
+    public AssociationLinkButton(ToolBar toolBar) {
+        super(LABEL, toolBar);
         setIcon(LABEL);
         this.addActionListener(this);
     }

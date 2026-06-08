@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import menu.MenuBar;
 
 public class MainFrame extends JFrame{
+
+    private static MainFrame instance;
+
     private Canvas canvas;
     private ToolBar toolBar;
     private MenuBar menuBar;
@@ -12,7 +15,7 @@ public class MainFrame extends JFrame{
     private final int WINDOW_WIDTH = 1000;
     private final int WINDOW_HEIGHT = 700;
 
-    public MainFrame() {
+    private MainFrame() {
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -20,10 +23,15 @@ public class MainFrame extends JFrame{
         initializeFrame();
     }
 
+    public static MainFrame getInstance(){
+        if (instance == null) instance = new MainFrame();
+        return instance;
+    }
+
     private void initializeFrame(){
-        canvas = new Canvas();
-        toolBar = new ToolBar(canvas);
-        menuBar = new MenuBar(canvas);
+        canvas = Canvas.getInstance();
+        toolBar = ToolBar.getInstance();
+        menuBar = MenuBar.getInstance();
 
         this.setLayout(new BorderLayout());
         this.setJMenuBar(menuBar);

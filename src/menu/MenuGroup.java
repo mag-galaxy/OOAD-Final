@@ -1,11 +1,10 @@
 package menu;
 
 import java.awt.event.ActionEvent;
-import gui.Canvas;
 
 public class MenuGroup extends MenuItemAbstract{
-    public MenuGroup(Canvas canvas) {
-        super("Group", canvas);
+    public MenuGroup() {
+        super("Group");
     }
 
     @Override

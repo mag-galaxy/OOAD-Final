@@ -3,7 +3,6 @@ package buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import gui.Canvas;
 import gui.ToolBar;
 import mode.DrawLinkMode;
 import objects.Generalization;
@@ -11,8 +10,8 @@ import objects.Generalization;
 public class GeneralizationLinkButton extends ButtonAbstract implements ActionListener {
     private static final String LABEL = "generalization";
     
-    public GeneralizationLinkButton(Canvas canvas, ToolBar toolBar){
-        super(LABEL, canvas, toolBar);
+    public GeneralizationLinkButton(ToolBar toolBar){
+        super(LABEL, toolBar);
         setIcon(LABEL);
         this.addActionListener(this);
     }
