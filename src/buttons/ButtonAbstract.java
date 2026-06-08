@@ -17,9 +17,9 @@ public abstract class ButtonAbstract extends JButton{
     private final Color DEFAULT_BG = Color.WHITE;
     private final Color DEFAULT_FG = Color.BLACK;
 
-    public ButtonAbstract(String label, Canvas canvas, ToolBar toolBar) {
+    public ButtonAbstract(String label, ToolBar toolBar) {
         super(label);
-        this.canvas = canvas;
+        this.canvas = Canvas.getInstance();
         this.toolBar = toolBar;
         this.setBackground(DEFAULT_BG);
         this.setFocusPainted(false);
