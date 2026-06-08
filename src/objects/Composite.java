@@ -2,9 +2,10 @@ package objects;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Composite extends BasicAbstract{
-    private ArrayList<BasicAbstract> members;
+    private List<BasicAbstract> members;
     private final Color DASH_COLOR = Color.GRAY;
     private final float DASH_WIDTH = 1.0f;
     private final float DASH_LEN = 10.0f;
@@ -20,7 +21,7 @@ public class Composite extends BasicAbstract{
     }
 
     @Override
-    public ArrayList<BasicAbstract> getMembers() {
+    public List<BasicAbstract> getMembers() {
         return members;
     }
 

@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 
 import java.awt.*;
@@ -20,9 +21,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     
     private static Canvas instance;
 
-    private ArrayList<BasicAbstract> objList;
-    private ArrayList<LinkAbstract> lineList;
-    private ArrayList<BasicAbstract> selectedObjs;
+    private List<BasicAbstract> objList;
+    private List<LinkAbstract> lineList;
+    private List<BasicAbstract> selectedObjs;
 
     private int currentDepth = 0;
     private BasicAbstract hoveredObj = null;
@@ -50,11 +51,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         selectedObjs = new ArrayList<>();
     }
 
-    public ArrayList<BasicAbstract> getObjs(){
+    public List<BasicAbstract> getObjs(){
         return objList;
     }
     
-    public ArrayList<BasicAbstract> getSelectedObjs(){
+    public List<BasicAbstract> getSelectedObjs(){
         return selectedObjs;
     }
 

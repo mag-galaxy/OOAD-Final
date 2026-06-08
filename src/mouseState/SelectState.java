@@ -1,6 +1,6 @@
 package mouseState;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -33,7 +33,7 @@ public class SelectState implements MouseStateInterface {
     @Override
     public void onReleased(MouseEvent e, Canvas canvas) {
         if (selectRect == null) return;
-        ArrayList<BasicAbstract> allObjs = canvas.getObjs();
+        List<BasicAbstract> allObjs = canvas.getObjs();
         for (BasicAbstract s : allObjs) {
             Rectangle objRect = new Rectangle(s.getX(), s.getY(), s.getWidth(), s.getHeight());
             if (selectRect.contains(objRect)) {

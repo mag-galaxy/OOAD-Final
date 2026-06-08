@@ -1,6 +1,6 @@
 package mouseState;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -9,10 +9,10 @@ import gui.Canvas;
 import objects.*;
 
 public class DragState implements MouseStateInterface {
-    private ArrayList<BasicAbstract> draggedObjs;
+    private List<BasicAbstract> draggedObjs;
     private Point lastMousePoint;
 
-    public DragState(ArrayList<BasicAbstract> objs, Point p) {
+    public DragState(List<BasicAbstract> objs, Point p) {
         this.draggedObjs = objs;
         this.lastMousePoint = p;
     }

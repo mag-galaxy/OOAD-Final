@@ -3,6 +3,7 @@ package mode;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import gui.Canvas;
 import mouseState.DragState;
@@ -14,8 +15,8 @@ import objects.Port;
 
 public class SelectMode implements ModeInterface {
     MouseStateInterface state;
-    ArrayList<BasicAbstract> allObjs;
-    ArrayList<BasicAbstract> selectedObjs;
+    List<BasicAbstract> allObjs;
+    List<BasicAbstract> selectedObjs;
 
     public SelectMode(){
         allObjs = new ArrayList<>();
@@ -50,6 +51,7 @@ public class SelectMode implements ModeInterface {
         }
         else {
             canvas.resetObjs();
+            canvas.updateSelectedObject();
             state = new SelectState(point);
             System.out.println("selecting state");
         }
