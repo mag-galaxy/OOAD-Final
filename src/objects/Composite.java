@@ -65,10 +65,9 @@ public class Composite extends BasicAbstract{
 
     @Override
     public boolean isInside(Point p) {
-        for (BasicAbstract s : members) {
-            if (s.isInside(p)) return true;
-        }
-        return false;
+        Rectangle bound = getBoundary();
+        if (bound.contains(p)) return true;
+        else return false;
     }
 
     @Override
